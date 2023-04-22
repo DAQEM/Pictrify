@@ -33,4 +33,9 @@ class DatabaseHelper
     {
         return $this->getCollection("photo_album");
     }
+
+    public function getSectionCollection(): Collection
+    {
+        return $this->getCollection("section");
+    }
 }
