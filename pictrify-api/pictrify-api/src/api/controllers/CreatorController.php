@@ -3,9 +3,13 @@
 namespace Pictrify;
 
 use Guid;
+use Pictrify\interfaces\IHttpDelete;
+use Pictrify\interfaces\IHttpGet;
+use Pictrify\interfaces\IHttpPost;
+use Pictrify\interfaces\IHttpPut;
 use UTCDate;
 
-class CreatorController extends BaseController
+class CreatorController extends BaseController implements IHttpGet, IHttpPost, IHttpPut, IHttpDelete
 {
     private ICreatorGateway $creatorsGateway;
 
@@ -20,24 +24,28 @@ class CreatorController extends BaseController
      * @throws ForbiddenException if the username or email already exists.
      * @throws BadRequestException if the json body is not valid.
      */
-    public function getCreatorsResponse(Request $request): array
+    public function getResponse(Request $request): array
     {
         return match ($request->getMethod()) {
-            'GET' => $this->getCreators($request),
-            'POST' => $this->createCreator($request),
-            'PUT' => $this->updateCreator($request),
-            'DELETE' => $this->deleteCreator($request),
+            'GET' => $this->handleGetRequest($request),
+            'POST' => $this->handlePostRequest($request),
+            'PUT' => $this->handlePutRequest($request),
+            'DELETE' => $this->handleDeleteRequest($request),
             default => throw new MethodNotAllowedException(),
         };
     }
 
     /**
      * @throws NotFoundException if the creator is not found.
+     * @throws InvalidUrlException if the url is invalid.
      */
-    private function getCreators(Request $request): array
+    public function handleGetRequest(Request $request): array
     {
         if (count($request->getExplodedPath()) < 3) {
             return $this->getAllCreators();
+        }
+        elseif (count($request->getExplodedPath()) > 3) {
+            throw new InvalidUrlException();
         }
 
         return match ($request->getExplodedPath()[2]) {
@@ -45,6 +53,42 @@ class CreatorController extends BaseController
             'username' => $this->getCreatorByUsername($request->getExplodedPath()[3]),
             'email' => $this->getCreatorByEmail($request->getExplodedPath()[3]),
             default => $this->getCreatorById($request->getExplodedPath()[2]),
+        };
+    }
+
+    /**
+     * @throws ForbiddenException if the username or email already exists.
+     * @throws BadRequestException if the json body is not valid.
+     * @throws InvalidUrlException if the url is invalid.
+     */
+    public function handlePostRequest(Request $request): array
+    {
+        return match ($request->getExplodedPath()[2]) {
+            '' => $this->createCreator($request),
+            default => throw new InvalidUrlException(),
+        };
+    }
+
+    /**
+     * @throws BadRequestException if the json body is not valid.
+     * @throws InvalidUrlException if the url is invalid.
+     */
+    public function handlePutRequest(Request $request): array
+    {
+        return match ($request->getExplodedPath()[2]) {
+            '' => $this->updateCreator($request),
+            default => throw new InvalidUrlException(),
+        };
+    }
+
+    /**
+     * @throws InvalidUrlException if the url is invalid.
+     */
+    public function handleDeleteRequest(Request $request): array
+    {
+        return match ($request->getExplodedPath()[2]) {
+            '' => $this->deleteCreator($request),
+            default => throw new InvalidUrlException(),
         };
     }
 

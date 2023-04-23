@@ -7,12 +7,12 @@ use Pictrify\Gateway\PhotoAlbumGateway;
 
 require './includes.php';
 
-$mainController = new MainController();
-$request = new Request();
-
 $gatewayDependencyInjection = new GatewayInjection(new CreatorGateway(), new PhotoAlbumGateway());
 
-$response = $mainController->getResponse($request, $gatewayDependencyInjection);
+$entryController = new EntryController($gatewayDependencyInjection);
+$request = new Request();
+
+$response = $entryController->getResponse($request);
 
 header('Content-Type: application/json');
 echo json_encode($response);

@@ -3,9 +3,13 @@
 namespace Pictrify;
 
 use Guid;
+use Pictrify\interfaces\IHttpDelete;
+use Pictrify\interfaces\IHttpGet;
+use Pictrify\interfaces\IHttpPost;
+use Pictrify\interfaces\IHttpPut;
 use UTCDate;
 
-class PhotoAlbumController extends BaseController
+class PhotoAlbumController extends BaseController implements IHttpGet, IHttpPost, IHttpPut, IHttpDelete
 {
     private IPhotoAlbumGateway $photoAlbumGateway;
     private CreatorController $creatorController;
@@ -21,14 +25,15 @@ class PhotoAlbumController extends BaseController
      * @throws BadRequestException if the json body is not valid.
      * @throws NotFoundException if the photo album is not found.
      * @throws ForbiddenException if the creator does not exist or if the creator already has a photo album with the same slug.
+     * @throws InvalidUrlException if the url is invalid.
      */
-    public function getPhotoAlbumResponse(Request $request): array
+    public function getResponse(Request $request): array
     {
         return match ($request->getMethod()) {
-            'GET' => $this->getPhotoAlbums($request),
-            'POST' => $this->createPhotoAlbum($request),
-            'PUT' => $this->updatePhotoAlbum($request),
-            'DELETE' => $this->deletePhotoAlbum($request),
+            'GET' => $this->handleGetRequest($request),
+            'POST' => $this->handlePostRequest($request),
+            'PUT' => $this->handlePutRequest($request),
+            'DELETE' => $this->handleDeleteRequest($request),
             default => throw new MethodNotAllowedException()
         };
     }
@@ -36,7 +41,7 @@ class PhotoAlbumController extends BaseController
     /**
      * @throws NotFoundException if the photo album is not found.
      */
-    private function getPhotoAlbums(Request $request): array
+    public function handleGetRequest(Request $request): array
     {
         if (count($request->getExplodedPath()) < 3) {
             return $this->getAllPhotoAlbums();
@@ -47,6 +52,43 @@ class PhotoAlbumController extends BaseController
             'creator' => $this->getAllPhotoAlbumsByCreatorId($request->getExplodedPath()[3]),
             'slug' => $this->getPhotoAlbumBySlug($request->getExplodedPath()[3]),
             default => $this->getPhotoAlbumById($request->getExplodedPath()[2])
+        };
+    }
+
+
+    /**
+     * @throws ForbiddenException if the creator does not exist or if the creator already has a photo album with the same slug.
+     * @throws InvalidUrlException if the url is invalid.
+     * @throws BadRequestException if the json body is not valid.
+     */
+    public function handlePostRequest(Request $request): array
+    {
+        return match ($request->getExplodedPath()[2]) {
+            '' => $this->createPhotoAlbum($request),
+            default => throw new InvalidUrlException()
+        };
+    }
+
+    /**
+     * @throws BadRequestException if the json body is not valid.
+     * @throws InvalidUrlException if the url is invalid.
+     */
+    public function handlePutRequest(Request $request): array
+    {
+        return match ($request->getExplodedPath()[2]) {
+            '' => $this->updatePhotoAlbum($request),
+            default => throw new InvalidUrlException()
+        };
+    }
+
+    /**
+     * @throws InvalidUrlException if the url is invalid.
+     */
+    public function handleDeleteRequest(Request $request): array
+    {
+        return match ($request->getExplodedPath()[2]) {
+            '' => $this->deletePhotoAlbum($request->getExplodedPath()[2]),
+            default => throw new InvalidUrlException()
         };
     }
 
@@ -171,10 +213,8 @@ class PhotoAlbumController extends BaseController
         ]);
     }
 
-    private function deletePhotoAlbum(Request $request): array
+    private function deletePhotoAlbum(string $id): array
     {
-        $id = $request->getExplodedPath()[2];
-
         $success = $this->photoAlbumGateway->deletePhotoAlbum($id);
 
         return $this->deletedResponse($success, ['id' => $id], 'Photo album with this id could not be found');

@@ -6,8 +6,13 @@ require '/var/www/vendor/autoload.php';
 
 require_once './Request.php';
 
-require_once './controllers/MainController.php';
+require_once './controllers/interfaces/IHttpGet.php';
+require_once './controllers/interfaces/IHttpPost.php';
+require_once './controllers/interfaces/IHttpPut.php';
+require_once './controllers/interfaces/IHttpDelete.php';
+
 require_once './controllers/BaseController.php';
+require_once './controllers/EntryController.php';
 require_once './controllers/CreatorController.php';
 require_once './controllers/PhotoAlbumController.php';
 

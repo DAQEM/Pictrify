@@ -2,8 +2,12 @@
 
 namespace Pictrify;
 
-class BaseController
+use Pictrify\interfaces\IController;
+
+abstract class BaseController implements IController
 {
+    abstract public function getResponse(Request $request): array;
+
     public function createdResponse(bool $success, array $array, string $reason = "Unknown"): array
     {
         if ($success)
