@@ -15,21 +15,24 @@ class EntryController extends BaseController
 
     public function getResponse(Request $request): array
     {
-        $creatorController = new CreatorController($this->gatewayInjection->getCreatorGateway());
-        $photoAlbumController = new PhotoAlbumController($this->gatewayInjection->getPhotoAlbumGateway(), $this->gatewayInjection->getCreatorGateway());
         try {
             return match ($request->getExplodedPath()[1]) {
                 '' => array('message' => 'Welcome to Pictrify API'),
-                'creator' => $creatorController->getResponse($request),
-                'photo-album' => $photoAlbumController->getResponse($request),
+                'creator' => $this->gatewayInjection->getCreatorController()->getResponse($request),
+                'photo-album' => $this->gatewayInjection->getPhotoAlbumController()->getResponse($request),
+                'section' => $this->gatewayInjection->getSectionController()->getResponse($request),
                 default => throw new NotFoundException()
             };
-        } catch (HttpException $e) {
-            http_response_code($e->getCode());
-            if ($e->getReason() !== '')
-                return array('error' => $e->getMessage(), 'reason' => $e->getReason());
-            else
-                return array('error' => $e->getMessage());
+        } catch (HttpException $ex) {
+            http_response_code($ex->getCode());
+
+            $response = array('error' => $ex->getMessage());
+
+            if ($ex->getReason()) {
+                $response['reason'] = $ex->getReason();
+            }
+
+            return $response;
         }
     }
 }

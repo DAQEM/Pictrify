@@ -12,7 +12,7 @@ interface ICreatorGateway
 
     public function getCreatorByEmail($email): ?array;
 
-    public function createCreator($id, $username, $email, $isoDate): bool;
+    public function createCreator($id, $username, $email, $join_date): bool;
 
     public function updateCreator($id, $username, $email): bool;
 

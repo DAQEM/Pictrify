@@ -34,13 +34,13 @@ class CreatorGateway implements ICreatorGateway
         return (array)$this->creatorCollection->findOne(["email" => $email]);
     }
 
-    public function createCreator($id, $username, $email, $isoDate): bool
+    public function createCreator($id, $username, $email, $join_date): bool
     {
         return $this->creatorCollection->insertOne([
                 "_id" => $id,
                 "username" => $username,
                 "email" => $email,
-                "created_at" => $isoDate
+                "created_at" => $join_date
             ])->getInsertedCount() > 0;
     }
 

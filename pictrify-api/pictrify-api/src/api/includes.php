@@ -16,6 +16,7 @@ require_once './controllers/BaseController.php';
 require_once './controllers/EntryController.php';
 require_once './controllers/CreatorController.php';
 require_once './controllers/PhotoAlbumController.php';
+require_once './controllers/SectionController.php';
 
 require_once './utils/Guid.php';
 require_once './utils/UTCDate.php';
@@ -30,6 +31,12 @@ require_once './exceptions/InvalidUrlException.php';
 require_once './gateway/GatewayInjection.php';
 require_once './gateway/ICreatorGateway.php';
 require_once './gateway/IPhotoAlbumGateway.php';
+require_once './gateway/ISectionGateway.php';
+
+require_once './services/BaseService.php';
+require_once './services/CreatorService.php';
+require_once './services/PhotoAlbumService.php';
+require_once './services/SectionService.php';
 
 
 // Gateway
@@ -39,3 +46,4 @@ require_once '../gateway/database/DatabaseConnection.php';
 
 require_once '../gateway/implementation/CreatorGateway.php';
 require_once '../gateway/implementation/PhotoAlbumGateway.php';
+require_once '../gateway/implementation/SectionGateway.php';

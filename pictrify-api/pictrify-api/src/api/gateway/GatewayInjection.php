@@ -6,20 +6,31 @@ class GatewayInjection
 {
     private ICreatorGateway $creatorGateway;
     private IPhotoAlbumGateway $photoAlbumGateway;
+    private ISectionGateway $sectionGateway;
 
-    public function __construct(ICreatorGateway $creatorGateway, IPhotoAlbumGateway $photoAlbumGateway)
+    public function __construct(
+        ICreatorGateway $creatorGateway,
+        IPhotoAlbumGateway $photoAlbumGateway,
+        ISectionGateway $sectionGateway
+    )
     {
         $this->creatorGateway = $creatorGateway;
         $this->photoAlbumGateway = $photoAlbumGateway;
+        $this->sectionGateway = $sectionGateway;
     }
 
-    public function getCreatorGateway(): ICreatorGateway
+    public function getCreatorController() : CreatorController
     {
-        return $this->creatorGateway;
+        return new CreatorController(new CreatorService($this->creatorGateway));
     }
 
-    public function getPhotoAlbumGateway(): IPhotoAlbumGateway
+    public function getPhotoAlbumController() : PhotoAlbumController
     {
-        return $this->photoAlbumGateway;
+        return new PhotoAlbumController(new PhotoAlbumService($this->photoAlbumGateway, $this->creatorGateway));
+    }
+
+    public function getSectionController() : SectionController
+    {
+        return new SectionController(new SectionService($this->sectionGateway, $this->photoAlbumGateway, $this->creatorGateway));
     }
 }
