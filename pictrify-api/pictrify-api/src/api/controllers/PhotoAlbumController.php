@@ -40,11 +40,16 @@ class PhotoAlbumController extends BaseController implements IHttpGet, IHttpPost
 
     /**
      * @throws NotFoundException if the photo album is not found.
+     * @throws InvalidUrlException if the url is invalid.
      */
     public function handleGetRequest(Request $request): array
     {
-        if (count($request->getExplodedPath()) < 3) {
+        if (count($request->getExplodedPath()) == 2) {
             return $this->getAllPhotoAlbums();
+        }
+
+        elseif (count($request->getExplodedPath()) > 3) {
+            throw new InvalidUrlException();
         }
 
         return match ($request->getExplodedPath()[2]) {

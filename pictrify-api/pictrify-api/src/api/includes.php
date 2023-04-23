@@ -6,6 +6,7 @@ require '/var/www/vendor/autoload.php';
 
 require_once './Request.php';
 
+require_once './controllers/interfaces/IController.php';
 require_once './controllers/interfaces/IHttpGet.php';
 require_once './controllers/interfaces/IHttpPost.php';
 require_once './controllers/interfaces/IHttpPut.php';
@@ -24,6 +25,7 @@ require_once './exceptions/NotFoundException.php';
 require_once './exceptions/MethodNotAllowedException.php';
 require_once './exceptions/ForbiddenException.php';
 require_once './exceptions/BadRequestException.php';
+require_once './exceptions/InvalidUrlException.php';
 
 require_once './gateway/GatewayInjection.php';
 require_once './gateway/ICreatorGateway.php';

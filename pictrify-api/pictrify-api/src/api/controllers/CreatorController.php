@@ -41,7 +41,7 @@ class CreatorController extends BaseController implements IHttpGet, IHttpPost, I
      */
     public function handleGetRequest(Request $request): array
     {
-        if (count($request->getExplodedPath()) < 3) {
+        if (count($request->getExplodedPath()) == 2) {
             return $this->getAllCreators();
         }
         elseif (count($request->getExplodedPath()) > 3) {
