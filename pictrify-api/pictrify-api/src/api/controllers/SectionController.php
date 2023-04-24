@@ -2,36 +2,13 @@
 
 namespace Pictrify;
 
-use Pictrify\interfaces\IHttpGet;
-use Pictrify\interfaces\IHttpPost;
-use Pictrify\interfaces\IHttpPut;
-use Pictrify\interfaces\IHttpDelete;
-
-class SectionController extends BaseController implements IHttpGet, IHttpPost, IHttpPut, IHttpDelete
+class SectionController extends BaseController
 {
     private SectionService $sectionService;
 
     public function __construct(SectionService $sectionService)
     {
         $this->sectionService = $sectionService;
-    }
-
-    /**
-     * @throws NotFoundException if the section is not found.
-     * @throws MethodNotAllowedException if the method is not allowed.
-     * @throws BadRequestException if the json body is not valid.
-     * @throws InvalidUrlException if the url is invalid.
-     * @throws ForbiddenException if the photo album does not exist or the values are invalid.
-     */
-    public function getResponse(Request $request): array
-    {
-        return match ($request->getMethod()) {
-            'GET' => $this->handleGetRequest($request),
-            'POST' => $this->handlePostRequest($request),
-            'PUT' => $this->handlePutRequest($request),
-            'DELETE' => $this->handleDeleteRequest($request),
-            default => throw new MethodNotAllowedException(),
-        };
     }
 
     /**
@@ -42,9 +19,7 @@ class SectionController extends BaseController implements IHttpGet, IHttpPost, I
     {
         if (count($request->getExplodedPath()) == 2) {
             return $this->sectionService->getAllSections();
-        }
-
-        elseif (count($request->getExplodedPath()) > 3) {
+        } elseif (count($request->getExplodedPath()) > 3) {
             throw new InvalidUrlException();
         }
 

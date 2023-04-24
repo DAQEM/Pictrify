@@ -2,36 +2,13 @@
 
 namespace Pictrify;
 
-use Pictrify\interfaces\IHttpDelete;
-use Pictrify\interfaces\IHttpGet;
-use Pictrify\interfaces\IHttpPost;
-use Pictrify\interfaces\IHttpPut;
-
-class PhotoAlbumController extends BaseController implements IHttpGet, IHttpPost, IHttpPut, IHttpDelete
+class PhotoAlbumController extends BaseController
 {
     private PhotoAlbumService $photoAlbumService;
 
     public function __construct(PhotoAlbumService $photoAlbumService)
     {
         $this->photoAlbumService = $photoAlbumService;
-    }
-
-    /**
-     * @throws MethodNotAllowedException if the request method is not allowed.
-     * @throws BadRequestException if the json body is not valid.
-     * @throws NotFoundException if the photo album is not found.
-     * @throws ForbiddenException if the creator does not exist or if the creator already has a photo album with the same slug.
-     * @throws InvalidUrlException if the url is invalid.
-     */
-    public function getResponse(Request $request): array
-    {
-        return match ($request->getMethod()) {
-            'GET' => $this->handleGetRequest($request),
-            'POST' => $this->handlePostRequest($request),
-            'PUT' => $this->handlePutRequest($request),
-            'DELETE' => $this->handleDeleteRequest($request),
-            default => throw new MethodNotAllowedException()
-        };
     }
 
     /**
@@ -42,9 +19,7 @@ class PhotoAlbumController extends BaseController implements IHttpGet, IHttpPost
     {
         if (count($request->getExplodedPath()) == 2) {
             return $this->photoAlbumService->getAllPhotoAlbums();
-        }
-
-        elseif (count($request->getExplodedPath()) > 3) {
+        } elseif (count($request->getExplodedPath()) > 3) {
             throw new InvalidUrlException();
         }
 
