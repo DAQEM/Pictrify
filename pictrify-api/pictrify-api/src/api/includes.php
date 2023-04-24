@@ -29,11 +29,11 @@ require_once './exceptions/ForbiddenException.php';
 require_once './exceptions/BadRequestException.php';
 require_once './exceptions/InvalidUrlException.php';
 
-require_once './gateway/GatewayInjection.php';
-require_once './gateway/interfaces/ICreatorGateway.php';
-require_once './gateway/interfaces/IPhotoAlbumGateway.php';
-require_once './gateway/interfaces/ISectionGateway.php';
-require_once './gateway/interfaces/ISectionItemGateway.php';
+require_once './repository/RepositoryInjection.php';
+require_once './repository/interfaces/ICreatorRepository.php';
+require_once './repository/interfaces/IPhotoAlbumRepository.php';
+require_once './repository/interfaces/ISectionRepository.php';
+require_once './repository/interfaces/ISectionItemRepository.php';
 
 require_once './services/BaseService.php';
 require_once './services/CreatorService.php';
@@ -42,12 +42,12 @@ require_once './services/SectionService.php';
 require_once './services/SectionItemService.php';
 
 
-// Gateway
+// Repository
 
-require_once '../gateway/database/DatabaseHelper.php';
-require_once '../gateway/database/DatabaseConnection.php';
+require_once '../repository/database/DatabaseHelper.php';
+require_once '../repository/database/DatabaseConnection.php';
 
-require_once '../gateway/implementation/CreatorGateway.php';
-require_once '../gateway/implementation/PhotoAlbumGateway.php';
-require_once '../gateway/implementation/SectionGateway.php';
-require_once '../gateway/implementation/SectionItemGateway.php';
+require_once '../repository/implementation/CreatorRepository.php';
+require_once '../repository/implementation/PhotoAlbumRepository.php';
+require_once '../repository/implementation/SectionRepository.php';
+require_once '../repository/implementation/SectionItemRepository.php';

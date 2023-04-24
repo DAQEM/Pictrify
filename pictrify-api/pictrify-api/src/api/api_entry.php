@@ -2,18 +2,18 @@
 
 namespace Pictrify;
 
-use Pictrify\Gateway\CreatorGateway;
-use Pictrify\Gateway\PhotoAlbumGateway;
-use Pictrify\Gateway\SectionGateway;
-use Pictrify\Gateway\SectionItemGateway;
+use Pictrify\Repository\CreatorRepository;
+use Pictrify\Repository\PhotoAlbumRepository;
+use Pictrify\Repository\SectionItemRepository;
+use Pictrify\Repository\SectionRepository;
 
 require './includes.php';
 
-$gatewayDependencyInjection = new GatewayInjection(
-    new CreatorGateway(), new PhotoAlbumGateway(),
-    new SectionGateway(), new SectionItemGateway());
+$repositoryDependencyInjection = new RepositoryInjection(
+    new CreatorRepository(), new PhotoAlbumRepository(),
+    new SectionRepository(), new SectionItemRepository());
 
-$entryController = new EntryController($gatewayDependencyInjection);
+$entryController = new EntryController($repositoryDependencyInjection);
 $request = new Request();
 
 $response = $entryController->getResponse($request);

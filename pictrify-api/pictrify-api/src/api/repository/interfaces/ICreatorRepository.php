@@ -2,7 +2,7 @@
 
 namespace Pictrify\interfaces;
 
-interface ICreatorGateway
+interface ICreatorRepository
 {
     public function getAllCreators(): array;
 

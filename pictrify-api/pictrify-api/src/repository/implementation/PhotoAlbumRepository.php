@@ -1,11 +1,11 @@
 <?php
 
-namespace Pictrify\Gateway;
+namespace Pictrify\Repository;
 
 use MongoDB\Collection;
-use Pictrify\interfaces\IPhotoAlbumGateway;
+use Pictrify\interfaces\IPhotoAlbumRepository;
 
-class PhotoAlbumGateway implements IPhotoAlbumGateway
+class PhotoAlbumRepository implements IPhotoAlbumRepository
 {
     private Collection $photoAlbumCollection;
 

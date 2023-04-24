@@ -1,11 +1,11 @@
 <?php
 
-namespace Pictrify\Gateway;
+namespace Pictrify\Repository;
 
 use MongoDB\Collection;
-use Pictrify\interfaces\ICreatorGateway;
+use Pictrify\interfaces\ICreatorRepository;
 
-class CreatorGateway implements ICreatorGateway
+class CreatorRepository implements ICreatorRepository
 {
     private Collection $creatorCollection;
 

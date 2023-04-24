@@ -6,11 +6,11 @@ require './includes.php';
 
 class EntryController extends BaseController
 {
-    private GatewayInjection $gatewayInjection;
+    private RepositoryInjection $repositoryInjection;
 
-    public function __construct(GatewayInjection $gatewayInjection)
+    public function __construct(RepositoryInjection $repositoryInjection)
     {
-        $this->gatewayInjection = $gatewayInjection;
+        $this->repositoryInjection = $repositoryInjection;
     }
 
     public function getResponse(Request $request): array
@@ -18,10 +18,10 @@ class EntryController extends BaseController
         try {
             return match ($request->getExplodedPath()[1]) {
                 '' => array('message' => 'Welcome to Pictrify API'),
-                'creator' => $this->gatewayInjection->getCreatorController()->getResponse($request),
-                'photo-album' => $this->gatewayInjection->getPhotoAlbumController()->getResponse($request),
-                'section' => $this->gatewayInjection->getSectionController()->getResponse($request),
-                'section-item' => $this->gatewayInjection->getSectionItemController()->getResponse($request),
+                'creator' => $this->repositoryInjection->getCreatorController()->getResponse($request),
+                'photo-album' => $this->repositoryInjection->getPhotoAlbumController()->getResponse($request),
+                'section' => $this->repositoryInjection->getSectionController()->getResponse($request),
+                'section-item' => $this->repositoryInjection->getSectionItemController()->getResponse($request),
                 default => throw new NotFoundException()
             };
         } catch (HttpException $ex) {

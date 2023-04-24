@@ -1,6 +1,6 @@
 <?php
 
-namespace Pictrify\Gateway;
+namespace Pictrify\Repository;
 
 use MongoDB\Collection;
 use MongoDB\Database;

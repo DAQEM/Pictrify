@@ -2,7 +2,7 @@
 
 namespace Pictrify\interfaces;
 
-interface IPhotoAlbumGateway
+interface IPhotoAlbumRepository
 {
     public function getAllPhotoAlbums(): array;
 

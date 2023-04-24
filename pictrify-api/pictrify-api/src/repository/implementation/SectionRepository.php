@@ -1,11 +1,11 @@
 <?php
 
-namespace Pictrify\Gateway;
+namespace Pictrify\Repository;
 
 use MongoDB\Collection;
-use Pictrify\interfaces\ISectionGateway;
+use Pictrify\interfaces\ISectionRepository;
 
-class SectionGateway implements ISectionGateway
+class SectionRepository implements ISectionRepository
 {
     private Collection $sectionCollection;
 

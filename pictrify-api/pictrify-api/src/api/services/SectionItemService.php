@@ -3,33 +3,33 @@
 namespace Pictrify;
 
 use Guid;
-use Pictrify\interfaces\ISectionItemGateway;
+use Pictrify\interfaces\ISectionItemRepository;
 use UTCDate;
 
 class SectionItemService extends BaseService
 {
-    private ISectionItemGateway $sectionItemGateway;
+    private ISectionItemRepository $sectionItemRepository;
     private SectionService $sectionService;
 
-    public function __construct(ISectionItemGateway $sectionItemGateway, SectionService $sectionService)
+    public function __construct(ISectionItemRepository $sectionItemRepository, SectionService $sectionService)
     {
-        $this->sectionItemGateway = $sectionItemGateway;
+        $this->sectionItemRepository = $sectionItemRepository;
         $this->sectionService = $sectionService;
     }
 
     public function getAllSectionItems(): array
     {
-        return $this->sectionItemGateway->getAllSectionItems();
+        return $this->sectionItemRepository->getAllSectionItems();
     }
 
     public function getSectionItemById(string $id): array
     {
-        return $this->sectionItemGateway->getSectionItemById($id);
+        return $this->sectionItemRepository->getSectionItemById($id);
     }
 
     public function getAllSectionItemsBySectionId(string $sectionId): array
     {
-        return $this->sectionItemGateway->getAllSectionItemsBySectionId($sectionId);
+        return $this->sectionItemRepository->getAllSectionItemsBySectionId($sectionId);
     }
 
     /**
@@ -52,7 +52,7 @@ class SectionItemService extends BaseService
             throw new ForbiddenException("The rotation is not valid.");
         }
 
-        $success = $this->sectionItemGateway->createSectionItem($id, $sectionId, $order, $rotation, $creationDate);
+        $success = $this->sectionItemRepository->createSectionItem($id, $sectionId, $order, $rotation, $creationDate);
 
         return $this->createdResponse($success, [
             "id" => $id,
@@ -78,7 +78,7 @@ class SectionItemService extends BaseService
             throw new ForbiddenException("The rotation is not valid.");
         }
 
-        $success = $this->sectionItemGateway->updateSectionItem($id, $sectionId, $order, $rotation, $editDate);
+        $success = $this->sectionItemRepository->updateSectionItem($id, $sectionId, $order, $rotation, $editDate);
 
         return $this->createdResponse($success, [
             "id" => $id,
@@ -91,7 +91,7 @@ class SectionItemService extends BaseService
 
     public function deleteSectionItem($id): array
     {
-        $success = $this->sectionItemGateway->deleteSectionItem($id);
+        $success = $this->sectionItemRepository->deleteSectionItem($id);
 
         return $this->createdResponse($success, [
             "id" => $id

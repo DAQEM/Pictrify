@@ -3,28 +3,28 @@
 namespace Pictrify;
 
 use Guid;
-use Pictrify\interfaces\IPhotoAlbumGateway;
+use Pictrify\interfaces\IPhotoAlbumRepository;
 use UTCDate;
 
 class PhotoAlbumService extends BaseService
 {
-    private IPhotoAlbumGateway $photoAlbumGateway;
+    private IPhotoAlbumRepository $photoAlbumRepository;
     private CreatorService $creatorService;
 
-    public function __construct(IPhotoAlbumGateway $photoAlbumGateway, CreatorService $creatorService)
+    public function __construct(IPhotoAlbumRepository $photoAlbumRepository, CreatorService $creatorService)
     {
-        $this->photoAlbumGateway = $photoAlbumGateway;
+        $this->photoAlbumRepository = $photoAlbumRepository;
         $this->creatorService = $creatorService;
     }
 
     public function getAllPhotoAlbums(): array
     {
-        return $this->photoAlbumGateway->getAllPhotoAlbums();
+        return $this->photoAlbumRepository->getAllPhotoAlbums();
     }
 
     public function getAllPhotoAlbumsByCreatorId(string $creatorId): array
     {
-        return $this->photoAlbumGateway->getAllPhotoAlbumsByCreatorId($creatorId);
+        return $this->photoAlbumRepository->getAllPhotoAlbumsByCreatorId($creatorId);
     }
 
     /**
@@ -32,7 +32,7 @@ class PhotoAlbumService extends BaseService
      */
     public function getPhotoAlbumBySlug(string $slug): array
     {
-        $result = $this->photoAlbumGateway->getPhotoAlbumBySlug($slug);
+        $result = $this->photoAlbumRepository->getPhotoAlbumBySlug($slug);
 
         return $result ?: throw new NotFoundException();
     }
@@ -42,7 +42,7 @@ class PhotoAlbumService extends BaseService
      */
     public function getPhotoAlbumByCreatorIdAndSlug(string $creatorId, string $slug): array
     {
-        $result = $this->photoAlbumGateway->getPhotoAlbumByCreatorIdAndSlug($creatorId, $slug);
+        $result = $this->photoAlbumRepository->getPhotoAlbumByCreatorIdAndSlug($creatorId, $slug);
 
         return $result ?: throw new NotFoundException();
     }
@@ -52,7 +52,7 @@ class PhotoAlbumService extends BaseService
      */
     public function getPhotoAlbumById(string $id): array
     {
-        $result = $this->photoAlbumGateway->getPhotoAlbumById($id);
+        $result = $this->photoAlbumRepository->getPhotoAlbumById($id);
 
         return $result ?: throw new NotFoundException();
     }
@@ -85,7 +85,7 @@ class PhotoAlbumService extends BaseService
             throw new ForbiddenException('The slug is not valid.');
         }
 
-        $success = $this->photoAlbumGateway->createPhotoAlbum($id, $creatorId, $name, $description, $slug, $editDate);
+        $success = $this->photoAlbumRepository->createPhotoAlbum($id, $creatorId, $name, $description, $slug, $editDate);
 
         return $this->createdResponse($success, [
             'id' => $id,
@@ -116,7 +116,7 @@ class PhotoAlbumService extends BaseService
             throw new ForbiddenException('The slug is not valid.');
         }
 
-        $success = $this->photoAlbumGateway->updatePhotoAlbum($id, $creatorId, $name, $description, $slug, $creationDate);
+        $success = $this->photoAlbumRepository->updatePhotoAlbum($id, $creatorId, $name, $description, $slug, $creationDate);
 
         return $this->updatedResponse($success, [
             'id' => $id,
@@ -130,7 +130,7 @@ class PhotoAlbumService extends BaseService
 
     public function deletePhotoAlbum(string $id): array
     {
-        $success = $this->photoAlbumGateway->deletePhotoAlbum($id);
+        $success = $this->photoAlbumRepository->deletePhotoAlbum($id);
 
         return $this->deletedResponse($success, ['id' => $id], 'Photo album with this id could not be found');
     }

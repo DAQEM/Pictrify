@@ -3,33 +3,33 @@
 namespace Pictrify;
 
 use Guid;
-use Pictrify\interfaces\ISectionGateway;
+use Pictrify\interfaces\ISectionRepository;
 use UTCDate;
 
 class SectionService extends BaseService
 {
-    private ISectionGateway $sectionGateway;
+    private ISectionRepository $sectionRepository;
     private PhotoAlbumService $photoAlbumService;
 
-    public function __construct(ISectionGateway $sectionGateway, PhotoAlbumService $photoAlbumService)
+    public function __construct(ISectionRepository $sectionRepository, PhotoAlbumService $photoAlbumService)
     {
-        $this->sectionGateway = $sectionGateway;
+        $this->sectionRepository = $sectionRepository;
         $this->photoAlbumService = $photoAlbumService;
     }
 
     public function getAllSections(): array
     {
-        return $this->sectionGateway->getAllSections();
+        return $this->sectionRepository->getAllSections();
     }
 
     public function getSectionsByCreatorId(mixed $int): array
     {
-        return $this->sectionGateway->getSectionsByCreatorId($int);
+        return $this->sectionRepository->getSectionsByCreatorId($int);
     }
 
     public function getSectionsByPhotoAlbumId(mixed $int): array
     {
-        return $this->sectionGateway->getSectionsByPhotoAlbumId($int);
+        return $this->sectionRepository->getSectionsByPhotoAlbumId($int);
     }
 
     /**
@@ -37,7 +37,7 @@ class SectionService extends BaseService
      */
     public function getSectionById(mixed $int): array
     {
-        $result = $this->sectionGateway->getSectionById($int);
+        $result = $this->sectionRepository->getSectionById($int);
 
         return $result ?: throw new NotFoundException();
     }
@@ -66,7 +66,7 @@ class SectionService extends BaseService
             throw new ForbiddenException("The section type is not valid.");
         }
 
-        $success = $this->sectionGateway->createSection($id, $photoAlbumId, $title, $description, $sectionType, $creationDate);
+        $success = $this->sectionRepository->createSection($id, $photoAlbumId, $title, $description, $sectionType, $creationDate);
 
         return $this->createdResponse($success, [
             'id' => $id,
@@ -97,7 +97,7 @@ class SectionService extends BaseService
             throw new ForbiddenException("The section type is not valid.");
         }
 
-        $success = $this->sectionGateway->updateSection($id, $photoAlbumId, $title, $description, $sectionType, $editDate);
+        $success = $this->sectionRepository->updateSection($id, $photoAlbumId, $title, $description, $sectionType, $editDate);
 
         return $this->updatedResponse($success, [
             'id' => $id,
@@ -111,7 +111,7 @@ class SectionService extends BaseService
 
     public function deleteSection(string $id): array
     {
-        $success = $this->sectionGateway->deleteSection($id);
+        $success = $this->sectionRepository->deleteSection($id);
 
         return $this->deletedResponse($success, [
             'id' => $id

@@ -2,7 +2,7 @@
 
 namespace Pictrify\interfaces;
 
-interface ISectionItemGateway
+interface ISectionItemRepository
 {
     public function getAllSectionItems(): array;
 

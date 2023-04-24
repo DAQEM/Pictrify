@@ -3,21 +3,21 @@
 namespace Pictrify;
 
 use Guid;
-use Pictrify\interfaces\ICreatorGateway;
+use Pictrify\interfaces\ICreatorRepository;
 use UTCDate;
 
 class CreatorService extends BaseService
 {
-    public ICreatorGateway $creatorGateway;
+    public ICreatorRepository $creatorRepository;
 
-    public function __construct(ICreatorGateway $creatorGateway)
+    public function __construct(ICreatorRepository $creatorRepository)
     {
-        $this->creatorGateway = $creatorGateway;
+        $this->creatorRepository = $creatorRepository;
     }
 
     public function getAllCreators(): array
     {
-        return $this->creatorGateway->getAllCreators();
+        return $this->creatorRepository->getAllCreators();
     }
 
     /**
@@ -25,7 +25,7 @@ class CreatorService extends BaseService
      */
     public function getCreatorById(string $id): ?array
     {
-        $result = $this->creatorGateway->getCreatorById($id);
+        $result = $this->creatorRepository->getCreatorById($id);
 
         return $result ?: throw new NotFoundException();
     }
@@ -35,7 +35,7 @@ class CreatorService extends BaseService
      */
     public function getCreatorByUsername(string $username): ?array
     {
-        $result = $this->creatorGateway->getCreatorByUsername($username);
+        $result = $this->creatorRepository->getCreatorByUsername($username);
 
         return $result ?: throw new NotFoundException();
     }
@@ -45,7 +45,7 @@ class CreatorService extends BaseService
      */
     public function getCreatorByEmail(string $email): ?array
     {
-        $result = $this->creatorGateway->getCreatorByEmail($email);
+        $result = $this->creatorRepository->getCreatorByEmail($email);
 
         return $result ?: throw new NotFoundException();
     }
@@ -75,7 +75,7 @@ class CreatorService extends BaseService
             throw new ForbiddenException('Email is not valid');
         }
 
-        $success = $this->creatorGateway->createCreator($id, $username, $email, $isoDate);
+        $success = $this->creatorRepository->createCreator($id, $username, $email, $isoDate);
 
         return $this->createdResponse($success, [
             '_id' => $id,
@@ -106,7 +106,7 @@ class CreatorService extends BaseService
             throw new ForbiddenException('Email is not valid');
         }
 
-        $success = $this->creatorGateway->updateCreator($id, $username, $email);
+        $success = $this->creatorRepository->updateCreator($id, $username, $email);
 
         return $this->updatedResponse($success, [
             '_id' => $id,
@@ -117,7 +117,7 @@ class CreatorService extends BaseService
 
     public function deleteCreator(string $id): array
     {
-        $success = $this->creatorGateway->deleteCreator($id);
+        $success = $this->creatorRepository->deleteCreator($id);
 
         return $this->deletedResponse($success, [
             '_id' => $id,
