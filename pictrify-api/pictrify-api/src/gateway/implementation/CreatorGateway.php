@@ -3,7 +3,7 @@
 namespace Pictrify\Gateway;
 
 use MongoDB\Collection;
-use Pictrify\ICreatorGateway;
+use Pictrify\interfaces\ICreatorGateway;
 
 class CreatorGateway implements ICreatorGateway
 {

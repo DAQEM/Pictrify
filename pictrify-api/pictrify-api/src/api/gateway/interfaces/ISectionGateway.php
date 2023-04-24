@@ -1,6 +1,6 @@
 <?php
 
-namespace Pictrify;
+namespace Pictrify\interfaces;
 
 interface ISectionGateway
 {

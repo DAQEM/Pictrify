@@ -3,6 +3,7 @@
 namespace Pictrify;
 
 use Guid;
+use Pictrify\interfaces\IPhotoAlbumGateway;
 use UTCDate;
 
 class PhotoAlbumService extends BaseService
@@ -10,10 +11,10 @@ class PhotoAlbumService extends BaseService
     private IPhotoAlbumGateway $photoAlbumGateway;
     private CreatorService $creatorService;
 
-    public function __construct(IPhotoAlbumGateway $photoAlbumGateway, ICreatorGateway $creatorGateway)
+    public function __construct(IPhotoAlbumGateway $photoAlbumGateway, CreatorService $creatorService)
     {
         $this->photoAlbumGateway = $photoAlbumGateway;
-        $this->creatorService = new CreatorService($creatorGateway);
+        $this->creatorService = $creatorService;
     }
 
     public function getAllPhotoAlbums(): array

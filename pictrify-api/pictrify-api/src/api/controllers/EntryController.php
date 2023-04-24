@@ -21,6 +21,7 @@ class EntryController extends BaseController
                 'creator' => $this->gatewayInjection->getCreatorController()->getResponse($request),
                 'photo-album' => $this->gatewayInjection->getPhotoAlbumController()->getResponse($request),
                 'section' => $this->gatewayInjection->getSectionController()->getResponse($request),
+                'section-item' => $this->gatewayInjection->getSectionItemController()->getResponse($request),
                 default => throw new NotFoundException()
             };
         } catch (HttpException $ex) {

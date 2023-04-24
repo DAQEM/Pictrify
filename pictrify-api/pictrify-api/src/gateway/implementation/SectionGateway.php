@@ -3,7 +3,7 @@
 namespace Pictrify\Gateway;
 
 use MongoDB\Collection;
-use Pictrify\ISectionGateway;
+use Pictrify\interfaces\ISectionGateway;
 
 class SectionGateway implements ISectionGateway
 {
@@ -37,30 +37,30 @@ class SectionGateway implements ISectionGateway
     public function createSection($id, $photoAlbumId, $title, $description, $sectionType, $creationDate): bool
     {
         return $this->sectionCollection->insertOne([
-            '_id' => $id,
-            'photoAlbumId' => $photoAlbumId,
-            'title' => $title,
-            'description' => $description,
-            'sectionType' => $sectionType,
-            'creationDate' => $creationDate,
-            'editDate' => null,
-        ])->getInsertedCount() > 0;
+                '_id' => $id,
+                'photoAlbumId' => $photoAlbumId,
+                'title' => $title,
+                'description' => $description,
+                'sectionType' => $sectionType,
+                'creationDate' => $creationDate,
+                'editDate' => null,
+            ])->getInsertedCount() > 0;
     }
 
     public function updateSection($id, $photoAlbumId, $title, $description, $sectionType, $editDate): bool
     {
         return $this->sectionCollection->updateOne(
-            ['_id' => $id],
-            [
-                '$set' => [
-                    'photoAlbumId' => $photoAlbumId,
-                    'title' => $title,
-                    'description' => $description,
-                    'sectionType' => $sectionType,
-                    'editDate' => $editDate,
+                ['_id' => $id],
+                [
+                    '$set' => [
+                        'photoAlbumId' => $photoAlbumId,
+                        'title' => $title,
+                        'description' => $description,
+                        'sectionType' => $sectionType,
+                        'editDate' => $editDate,
+                    ]
                 ]
-            ]
-        )->getModifiedCount() > 0;
+            )->getModifiedCount() > 0;
     }
 
     public function deleteSection($id): bool

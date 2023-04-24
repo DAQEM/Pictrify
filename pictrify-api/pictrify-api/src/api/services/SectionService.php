@@ -3,6 +3,7 @@
 namespace Pictrify;
 
 use Guid;
+use Pictrify\interfaces\ISectionGateway;
 use UTCDate;
 
 class SectionService extends BaseService
@@ -10,10 +11,10 @@ class SectionService extends BaseService
     private ISectionGateway $sectionGateway;
     private PhotoAlbumService $photoAlbumService;
 
-    public function __construct(ISectionGateway $sectionGateway, IPhotoAlbumGateway $photoAlbumGateway, ICreatorGateway $creatorGateway)
+    public function __construct(ISectionGateway $sectionGateway, PhotoAlbumService $photoAlbumService)
     {
         $this->sectionGateway = $sectionGateway;
-        $this->photoAlbumService = new PhotoAlbumService($photoAlbumGateway, $creatorGateway);
+        $this->photoAlbumService = $photoAlbumService;
     }
 
     public function getAllSections(): array
@@ -65,7 +66,7 @@ class SectionService extends BaseService
             throw new ForbiddenException("The section type is not valid.");
         }
 
-        $success =  $this->sectionGateway->createSection($id, $photoAlbumId, $title, $description, $sectionType, $creationDate);
+        $success = $this->sectionGateway->createSection($id, $photoAlbumId, $title, $description, $sectionType, $creationDate);
 
         return $this->createdResponse($success, [
             'id' => $id,
@@ -114,7 +115,17 @@ class SectionService extends BaseService
 
         return $this->deletedResponse($success, [
             'id' => $id
-        ]);
+        ], 'Section with this id could not be found');
+    }
+
+    public function sectionIdExists($sectionId): bool
+    {
+        try {
+            $this->getSectionById($sectionId);
+            return true;
+        } catch (NotFoundException) {
+            return false;
+        }
     }
 
     private function titleValid($title): bool

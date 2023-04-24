@@ -3,12 +3,13 @@
 namespace Pictrify;
 
 use Guid;
+use Pictrify\interfaces\ICreatorGateway;
 use UTCDate;
 
 class CreatorService extends BaseService
 {
     public ICreatorGateway $creatorGateway;
-    
+
     public function __construct(ICreatorGateway $creatorGateway)
     {
         $this->creatorGateway = $creatorGateway;
@@ -120,8 +121,7 @@ class CreatorService extends BaseService
 
         return $this->deletedResponse($success, [
             '_id' => $id,
-        ],
-            "Creator with this id could not be found");
+        ], 'Creator with this id could not be found');
     }
 
     public function creatorIdExists(string $id): bool

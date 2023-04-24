@@ -3,7 +3,7 @@
 namespace Pictrify\Gateway;
 
 use MongoDB\Collection;
-use Pictrify\IPhotoAlbumGateway;
+use Pictrify\interfaces\IPhotoAlbumGateway;
 
 class PhotoAlbumGateway implements IPhotoAlbumGateway
 {

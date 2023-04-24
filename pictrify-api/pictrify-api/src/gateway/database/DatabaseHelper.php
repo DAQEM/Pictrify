@@ -38,4 +38,9 @@ class DatabaseHelper
     {
         return $this->getCollection("section");
     }
+
+    public function getSectionItemCollection(): Collection
+    {
+        return $this->getCollection("section_item");
+    }
 }
