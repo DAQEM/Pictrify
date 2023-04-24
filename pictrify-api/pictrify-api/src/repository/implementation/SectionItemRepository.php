@@ -23,7 +23,7 @@ class SectionItemRepository implements ISectionItemRepository
 
     public function getSectionItemById(string $id): array
     {
-        return $this->sectionItemCollection->findOne(['_id' => $id]);
+        return (array)$this->sectionItemCollection->findOne(['_id' => $id]);
     }
 
     public function getAllSectionItemsBySectionId(string $sectionId): array

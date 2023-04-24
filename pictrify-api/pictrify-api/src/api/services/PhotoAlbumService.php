@@ -173,7 +173,7 @@ class PhotoAlbumService extends BaseService
          * only alphanumeric characters, spaces, and the following special
          * characters: - , . ! ?
          */
-        return preg_match('/^[a-zA-Z0-9\s\-_,.!?]{1,4096}$/', $description);
+        return preg_match('/^[\s\S]{0,4096}$/', $description);
     }
 
     private function slugValid(string $slug): bool

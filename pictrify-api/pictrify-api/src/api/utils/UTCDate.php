@@ -9,8 +9,8 @@ class UTCDate
         return substr($date->format('Y-m-d\TH:i:s.u\Z'), 0, -4) . 'Z';
     }
 
-    public static function isValidISO($date)
+    public static function isValidISO($date): bool
     {
-        return preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/', $date);
+        return preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/', $date);
     }
 }

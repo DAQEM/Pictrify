@@ -13,6 +13,7 @@ class SectionItemController extends BaseController
 
     /**
      * @throws InvalidUrlException if the url is invalid.
+     * @throws NotFoundException if the sectionItem is not found.
      */
     public function handleGetRequest(Request $request): array
     {
