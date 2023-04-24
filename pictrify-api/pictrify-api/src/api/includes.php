@@ -19,6 +19,7 @@ require_once './controllers/PhotoAlbumController.php';
 require_once './controllers/SectionController.php';
 require_once './controllers/SectionItemController.php';
 require_once './controllers/ImageController.php';
+require_once './controllers/PhotoAlbumCommentController.php';
 
 require_once './utils/Guid.php';
 require_once './utils/UTCDate.php';
@@ -36,6 +37,7 @@ require_once './repository/interfaces/IPhotoAlbumRepository.php';
 require_once './repository/interfaces/ISectionRepository.php';
 require_once './repository/interfaces/ISectionItemRepository.php';
 require_once './repository/interfaces/IImageRepository.php';
+require_once './repository/interfaces/IPhotoAlbumCommentRepository.php';
 
 require_once './services/BaseService.php';
 require_once './services/CreatorService.php';
@@ -43,6 +45,7 @@ require_once './services/PhotoAlbumService.php';
 require_once './services/SectionService.php';
 require_once './services/SectionItemService.php';
 require_once './services/ImageService.php';
+require_once './services/PhotoAlbumCommentService.php';
 
 
 // Repository
@@ -55,3 +58,4 @@ require_once '../repository/implementation/PhotoAlbumRepository.php';
 require_once '../repository/implementation/SectionRepository.php';
 require_once '../repository/implementation/SectionItemRepository.php';
 require_once '../repository/implementation/ImageRepository.php';
+require_once '../repository/implementation/PhotoAlbumCommentRepository.php';

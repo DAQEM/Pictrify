@@ -4,6 +4,7 @@ namespace Pictrify;
 
 use Pictrify\interfaces\ICreatorRepository;
 use Pictrify\interfaces\IImageRepository;
+use Pictrify\interfaces\IPhotoAlbumCommentRepository;
 use Pictrify\interfaces\IPhotoAlbumRepository;
 use Pictrify\interfaces\ISectionItemRepository;
 use Pictrify\interfaces\ISectionRepository;
@@ -15,13 +16,15 @@ class RepositoryInjection
     private ISectionRepository $sectionRepository;
     private ISectionItemRepository $sectionItemRepository;
     private IImageRepository $imageRepository;
+    private IPhotoAlbumCommentRepository $photoAlbumCommentRepository;
 
     public function __construct(
-        ICreatorRepository     $creatorRepository,
-        IPhotoAlbumRepository  $photoAlbumRepository,
-        ISectionRepository     $sectionRepository,
-        ISectionItemRepository $sectionItemRepository,
-        IImageRepository       $imageRepository
+        ICreatorRepository           $creatorRepository,
+        IPhotoAlbumRepository        $photoAlbumRepository,
+        ISectionRepository           $sectionRepository,
+        ISectionItemRepository       $sectionItemRepository,
+        IImageRepository             $imageRepository,
+        IPhotoAlbumCommentRepository $photoAlbumCommentRepository
     )
     {
         $this->creatorRepository = $creatorRepository;
@@ -29,6 +32,7 @@ class RepositoryInjection
         $this->sectionRepository = $sectionRepository;
         $this->sectionItemRepository = $sectionItemRepository;
         $this->imageRepository = $imageRepository;
+        $this->photoAlbumCommentRepository = $photoAlbumCommentRepository;
     }
 
     private function getCreatorService(): CreatorService
@@ -56,6 +60,11 @@ class RepositoryInjection
         return new ImageService($this->imageRepository, $this->getSectionItemService());
     }
 
+    private function getPhotoAlbumCommentService(): PhotoAlbumCommentService
+    {
+        return new PhotoAlbumCommentService($this->photoAlbumCommentRepository, $this->getPhotoAlbumService(), $this->getCreatorService());
+    }
+
 
     public function getCreatorController(): CreatorController
     {
@@ -80,5 +89,10 @@ class RepositoryInjection
     public function getImageController(): ImageController
     {
         return new ImageController($this->getImageService());
+    }
+
+    public function getPhotoAlbumCommentController(): PhotoAlbumCommentController
+    {
+        return new PhotoAlbumCommentController($this->getPhotoAlbumCommentService());
     }
 }

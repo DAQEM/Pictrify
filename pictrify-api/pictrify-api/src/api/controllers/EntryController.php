@@ -23,6 +23,7 @@ class EntryController extends BaseController
                 'section' => $this->repositoryInjection->getSectionController()->getResponse($request),
                 'section-item' => $this->repositoryInjection->getSectionItemController()->getResponse($request),
                 'image' => $this->repositoryInjection->getImageController()->getResponse($request),
+                'photo-album-comment' => $this->repositoryInjection->getPhotoAlbumCommentController()->getResponse($request),
                 default => throw new NotFoundException()
             };
         } catch (HttpException $ex) {
