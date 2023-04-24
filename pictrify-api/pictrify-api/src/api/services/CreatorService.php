@@ -57,7 +57,7 @@ class CreatorService extends BaseService
     {
         //create a new uuid v4 for the creator
         $id = Guid::newGuid();
-        $isoDate = UTCDate::getUTCDateISO();
+        $isoDate = UTCDate::nowISO();
 
         if ($this->creatorUsernameExists($id, $username)) {
             throw new ForbiddenException('Username already exists');

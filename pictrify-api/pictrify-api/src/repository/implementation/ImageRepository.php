@@ -23,48 +23,48 @@ class ImageRepository implements IImageRepository
 
     public function getImageById(string $id): array
     {
-        return $this->imageCollection->findOne(['_id' => $id]);
+        return (array)$this->imageCollection->findOne(['_id' => $id]);
     }
 
-    public function getImagesByCreatorId(string $creatorId): array
+    public function getImageBySectionItemId(string $sectionItemId): array
+    {
+        return $this->imageCollection->find(['sectionItemId' => $sectionItemId])->toArray();
+    }
+
+    public function getAllImagesByCreatorId(string $creatorId): array
     {
         $images = array();
         $sectionItems = $this->sectionItemRepository->getAllSectionItemsByCreatorId($creatorId);
 
         foreach ($sectionItems as $sectionItem) {
-            $images = array_merge($images, $this->getImagesBySectionItemId($sectionItem['_id']));
+            $images = array_merge($images, $this->getImageBySectionItemId($sectionItem['_id']));
         }
 
         return $images;
     }
 
-    public function getImagesByPhotoAlbumId(string $photoAlbumId): array
+    public function getAllImagesByPhotoAlbumId(string $photoAlbumId): array
     {
         $images = array();
         $sectionItems = $this->sectionItemRepository->getAllSectionItemsByPhotoAlbumId($photoAlbumId);
 
         foreach ($sectionItems as $sectionItem) {
-            $images = array_merge($images, $this->getImagesBySectionItemId($sectionItem['_id']));
+            $images = array_merge($images, $this->getImageBySectionItemId($sectionItem['_id']));
         }
 
         return $images;
     }
 
-    public function getImagesBySectionId(string $sectionId): array
+    public function getAllImagesBySectionId(string $sectionId): array
     {
         $images = array();
         $sectionItems = $this->sectionItemRepository->getAllSectionItemsBySectionId($sectionId);
 
         foreach ($sectionItems as $sectionItem) {
-            $images = array_merge($images, $this->getImagesBySectionItemId($sectionItem['_id']));
+            $images = array_merge($images, $this->getImageBySectionItemId($sectionItem['_id']));
         }
 
         return $images;
-    }
-
-    public function getImagesBySectionItemId(string $sectionItemId): array
-    {
-        return $this->imageCollection->find(['sectionItemId' => $sectionItemId])->toArray();
     }
 
     public function createImage($id, $sectionItemId, $title, $description, $caption, $date, $url, $creationDate): bool

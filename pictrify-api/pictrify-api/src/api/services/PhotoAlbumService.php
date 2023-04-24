@@ -63,7 +63,7 @@ class PhotoAlbumService extends BaseService
     public function createPhotoAlbum($creatorId, $name, $description, $slug): array
     {
         $id = Guid::newGuid();
-        $editDate = UTCDate::getUTCDateISO();
+        $editDate = UTCDate::nowISO();
 
         if (!$this->creatorService->creatorIdExists($creatorId)) {
             throw new ForbiddenException('The creator does not exist.');
@@ -102,7 +102,7 @@ class PhotoAlbumService extends BaseService
      */
     public function updatePhotoAlbum($id, $creatorId, $name, $description, $slug): array
     {
-        $creationDate = UTCDate::getUTCDateISO();
+        $creationDate = UTCDate::nowISO();
 
         if (!$this->nameValid($name)) {
             throw new ForbiddenException('The name is not valid.');

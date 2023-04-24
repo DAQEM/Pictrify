@@ -8,13 +8,13 @@ interface IImageRepository
 
     public function getImageById(string $id): array;
 
-    public function getImagesByCreatorId(string $creatorId): array;
+    public function getImageBySectionItemId(string $sectionItemId): array;
 
-    public function getImagesByPhotoAlbumId(string $photoAlbumId): array;
+    public function getAllImagesByCreatorId(string $creatorId): array;
 
-    public function getImagesBySectionId(string $sectionId): array;
+    public function getAllImagesByPhotoAlbumId(string $photoAlbumId): array;
 
-    public function getImagesBySectionItemId(string $sectionItemId): array;
+    public function getAllImagesBySectionId(string $sectionId): array;
 
     public function createImage($id, $sectionItemId, $title, $description, $caption, $date, $url, $creationDate): bool;
 

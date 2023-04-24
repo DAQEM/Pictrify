@@ -29,7 +29,7 @@ class SectionService extends BaseService
 
     public function getSectionsByPhotoAlbumId(mixed $int): array
     {
-        return $this->sectionRepository->getSectionsByPhotoAlbumId($int);
+        return $this->sectionRepository->getAllSectionsByPhotoAlbumId($int);
     }
 
     /**
@@ -48,7 +48,7 @@ class SectionService extends BaseService
     public function createSection($photoAlbumId, $title, $description, $sectionType): array
     {
         $id = Guid::newGuid();
-        $creationDate = UTCDate::getUTCDateISO();
+        $creationDate = UTCDate::nowISO();
 
         if (!$this->photoAlbumService->photoAlbumIdExists($photoAlbumId)) {
             throw new ForbiddenException("The photo album does not exist.");
@@ -83,7 +83,7 @@ class SectionService extends BaseService
      */
     public function updateSection($id, $photoAlbumId, $title, $description, $sectionType): array
     {
-        $editDate = UTCDate::getUTCDateISO();
+        $editDate = UTCDate::nowISO();
 
         if (!$this->titleValid($title)) {
             throw new ForbiddenException("The title is not valid.");

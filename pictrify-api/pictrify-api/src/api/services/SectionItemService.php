@@ -22,9 +22,14 @@ class SectionItemService extends BaseService
         return $this->sectionItemRepository->getAllSectionItems();
     }
 
+    /**
+     * @throws NotFoundException if the section item is not found.
+     */
     public function getSectionItemById(string $id): array
     {
-        return $this->sectionItemRepository->getSectionItemById($id);
+        $result = $this->sectionItemRepository->getSectionItemById($id);
+
+        return $result ?: throw new NotFoundException();
     }
 
     public function getAllSectionItemsBySectionId(string $sectionId): array
@@ -48,7 +53,7 @@ class SectionItemService extends BaseService
     public function createSectionItem($sectionId, $order, $rotation): array
     {
         $id = Guid::newGuid();
-        $creationDate = UTCDate::getUTCDateISO();
+        $creationDate = UTCDate::nowISO();
 
         if (!$this->sectionService->sectionIdExists($sectionId)) {
             throw new ForbiddenException("The section does not exist.");
@@ -78,7 +83,7 @@ class SectionItemService extends BaseService
      */
     public function updateSectionItem($id, $sectionId, $order, $rotation): array
     {
-        $editDate = UTCDate::getUTCDateISO();
+        $editDate = UTCDate::nowISO();
 
         if (!$this->orderValid($order)) {
             throw new ForbiddenException("The order is not valid.");
@@ -106,6 +111,16 @@ class SectionItemService extends BaseService
         return $this->createdResponse($success, [
             "id" => $id
         ], 'Section item with this id could not be found');
+    }
+
+    public function sectionItemIdExists($sectionItemId): bool
+    {
+        try {
+            $this->getSectionItemById($sectionItemId);
+            return true;
+        } catch (NotFoundException) {
+            return false;
+        }
     }
 
     private function orderValid($order): bool
