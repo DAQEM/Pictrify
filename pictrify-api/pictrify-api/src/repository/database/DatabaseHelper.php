@@ -53,4 +53,9 @@ class DatabaseHelper
     {
         return $this->getCollection("photo_album_comment");
     }
+
+    public function getImageCommentCollection(): Collection
+    {
+        return $this->getCollection("image_comment");
+    }
 }

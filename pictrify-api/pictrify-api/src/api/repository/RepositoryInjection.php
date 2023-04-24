@@ -17,6 +17,7 @@ class RepositoryInjection
     private ISectionItemRepository $sectionItemRepository;
     private IImageRepository $imageRepository;
     private IPhotoAlbumCommentRepository $photoAlbumCommentRepository;
+    private IImageCommentRepository $imageCommentRepository;
 
     public function __construct(
         ICreatorRepository           $creatorRepository,
@@ -24,7 +25,8 @@ class RepositoryInjection
         ISectionRepository           $sectionRepository,
         ISectionItemRepository       $sectionItemRepository,
         IImageRepository             $imageRepository,
-        IPhotoAlbumCommentRepository $photoAlbumCommentRepository
+        IPhotoAlbumCommentRepository $photoAlbumCommentRepository,
+        IImageCommentRepository      $imageCommentRepository
     )
     {
         $this->creatorRepository = $creatorRepository;
@@ -33,6 +35,7 @@ class RepositoryInjection
         $this->sectionItemRepository = $sectionItemRepository;
         $this->imageRepository = $imageRepository;
         $this->photoAlbumCommentRepository = $photoAlbumCommentRepository;
+        $this->imageCommentRepository = $imageCommentRepository;
     }
 
     private function getCreatorService(): CreatorService
@@ -65,6 +68,11 @@ class RepositoryInjection
         return new PhotoAlbumCommentService($this->photoAlbumCommentRepository, $this->getPhotoAlbumService(), $this->getCreatorService());
     }
 
+    private function getImageCommentService(): ImageCommentService
+    {
+        return new ImageCommentService($this->imageCommentRepository, $this->getImageService(), $this->getCreatorService());
+    }
+
 
     public function getCreatorController(): CreatorController
     {
@@ -94,5 +102,10 @@ class RepositoryInjection
     public function getPhotoAlbumCommentController(): PhotoAlbumCommentController
     {
         return new PhotoAlbumCommentController($this->getPhotoAlbumCommentService());
+    }
+
+    public function getImageCommentController(): ImageCommentController
+    {
+        return new ImageCommentController($this->getImageCommentService());
     }
 }

@@ -62,7 +62,7 @@ class PhotoAlbumCommentService extends BaseService
             throw new ForbiddenException('The creator does not exist.');
         }
 
-        if (!$this->validText($text)) {
+        if (!$this->textValid($text)) {
             throw new ForbiddenException('The text is not valid.');
         }
 
@@ -84,7 +84,7 @@ class PhotoAlbumCommentService extends BaseService
     {
         $editDate = UTCDate::nowISO();
 
-        if (!$this->validText($text)) {
+        if (!$this->textValid($text)) {
             throw new ForbiddenException('The text is not valid.');
         }
 
@@ -106,7 +106,7 @@ class PhotoAlbumCommentService extends BaseService
         ]);
     }
 
-    private function validText(string $text): bool
+    private function textValid(string $text): bool
     {
         return preg_match('/^[\s\S]{0,512}$/', $text);
     }

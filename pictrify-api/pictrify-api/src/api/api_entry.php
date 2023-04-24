@@ -3,6 +3,7 @@
 namespace Pictrify;
 
 use Pictrify\Repository\CreatorRepository;
+use Pictrify\Repository\ImageCommentRepository;
 use Pictrify\Repository\ImageRepository;
 use Pictrify\Repository\PhotoAlbumCommentRepository;
 use Pictrify\Repository\PhotoAlbumRepository;
@@ -14,7 +15,8 @@ require './includes.php';
 $repositoryDependencyInjection = new RepositoryInjection(
     new CreatorRepository(), new PhotoAlbumRepository(),
     new SectionRepository(), new SectionItemRepository(),
-    new ImageRepository(), new PhotoAlbumCommentRepository());
+    new ImageRepository(), new PhotoAlbumCommentRepository(),
+    new ImageCommentRepository());
 
 $entryController = new EntryController($repositoryDependencyInjection);
 $request = new Request();

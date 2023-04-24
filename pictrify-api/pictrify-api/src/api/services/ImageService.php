@@ -152,7 +152,7 @@ class ImageService extends BaseService
         ], 'Image with this id could not be found');
     }
 
-    private function imageIdExists(string $id): bool
+    public function imageIdExists(string $id): bool
     {
         try {
             $this->getImageById($id);
