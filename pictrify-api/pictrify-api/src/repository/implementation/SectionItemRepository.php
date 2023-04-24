@@ -8,10 +8,12 @@ use Pictrify\interfaces\ISectionItemRepository;
 class SectionItemRepository implements ISectionItemRepository
 {
     private Collection $sectionItemCollection;
+    private SectionRepository $sectionRepository;
 
     public function __construct()
     {
         $this->sectionItemCollection = (new DatabaseHelper())->getSectionItemCollection();
+        $this->sectionRepository = new SectionRepository();
     }
 
     public function getAllSectionItems(): array
@@ -27,6 +29,30 @@ class SectionItemRepository implements ISectionItemRepository
     public function getAllSectionItemsBySectionId(string $sectionId): array
     {
         return $this->sectionItemCollection->find(['sectionId' => $sectionId])->toArray();
+    }
+
+    public function getAllSectionItemsByCreatorId(string $creatorId): array
+    {
+        $sectionItems = array();
+        $sections = $this->sectionRepository->getAllSectionsByCreatorId($creatorId);
+
+        foreach ($sections as $section) {
+            $sectionItems = array_merge($sectionItems, $this->getAllSectionItemsBySectionId($section['_id']));
+        }
+
+        return $sectionItems;
+    }
+
+    public function getAllSectionItemsByPhotoAlbumId(string $creatorId): array
+    {
+        $sectionItems = array();
+        $sections = $this->sectionRepository->getAllSectionsByPhotoAlbumId($creatorId);
+
+        foreach ($sections as $section) {
+            $sectionItems = array_merge($sectionItems, $this->getAllSectionItemsBySectionId($section['_id']));
+        }
+
+        return $sectionItems;
     }
 
     public function createSectionItem($id, $sectionId, $order, $rotation, $creationDate): bool

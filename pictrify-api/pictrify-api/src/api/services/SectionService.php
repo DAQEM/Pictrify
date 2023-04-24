@@ -24,7 +24,7 @@ class SectionService extends BaseService
 
     public function getSectionsByCreatorId(mixed $int): array
     {
-        return $this->sectionRepository->getSectionsByCreatorId($int);
+        return $this->sectionRepository->getAllSectionsByCreatorId($int);
     }
 
     public function getSectionsByPhotoAlbumId(mixed $int): array

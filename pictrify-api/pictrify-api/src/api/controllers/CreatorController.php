@@ -19,7 +19,7 @@ class CreatorController extends BaseController
     {
         if (count($request->getExplodedPath()) == 2) {
             return $this->creatorService->getAllCreators();
-        } elseif (count($request->getExplodedPath()) > 3) {
+        } elseif (count($request->getExplodedPath()) > 4) {
             throw new InvalidUrlException();
         }
 

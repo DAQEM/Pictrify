@@ -8,9 +8,9 @@ interface ISectionRepository
 
     public function getSectionById(string $id): array;
 
-    public function getSectionsByCreatorId(string $creatorId): array;
+    public function getAllSectionsByPhotoAlbumId(string $photoAlbumId): array;
 
-    public function getSectionsByPhotoAlbumId(string $photoAlbumId): array;
+    public function getAllSectionsByCreatorId(string $creatorId): array;
 
     public function createSection($id, $photoAlbumId, $title, $description, $sectionType, $creationDate): bool;
 

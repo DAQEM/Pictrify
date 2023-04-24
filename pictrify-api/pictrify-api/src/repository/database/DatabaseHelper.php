@@ -24,9 +24,9 @@ class DatabaseHelper
         return $this->getDatabase()->selectCollection($collection);
     }
 
-    public function getCreatorsCollection(): Collection
+    public function getCreatorCollection(): Collection
     {
-        return $this->getCollection("creators");
+        return $this->getCollection("creator");
     }
 
     public function getPhotoAlbumCollection(): Collection
@@ -42,5 +42,10 @@ class DatabaseHelper
     public function getSectionItemCollection(): Collection
     {
         return $this->getCollection("section_item");
+    }
+
+    public function getImagesCollection(): Collection
+    {
+        return $this->getCollection("image");
     }
 }

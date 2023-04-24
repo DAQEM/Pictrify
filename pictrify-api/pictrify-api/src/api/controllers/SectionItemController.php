@@ -18,12 +18,14 @@ class SectionItemController extends BaseController
     {
         if (count($request->getExplodedPath()) == 2) {
             return $this->sectionItemService->getAllSectionItems();
-        } elseif (count($request->getExplodedPath()) > 3) {
+        } elseif (count($request->getExplodedPath()) > 4) {
             throw new InvalidUrlException();
         }
 
         return match ($request->getExplodedPath()[2]) {
             '' => $this->sectionItemService->getAllSectionItems(),
+            'creator' => $this->sectionItemService->getAllSectionItemsByCreatorId($request->getExplodedPath()[3]),
+            'photo-album' => $this->sectionItemService->getAllSectionItemsByPhotoAlbumId($request->getExplodedPath()[3]),
             'section' => $this->sectionItemService->getAllSectionItemsBySectionId($request->getExplodedPath()[3]),
             default => $this->sectionItemService->getSectionItemById($request->getExplodedPath()[2]),
         };
@@ -42,8 +44,8 @@ class SectionItemController extends BaseController
 
         return $this->sectionItemService->createSectionItem(
             $request->getJsonString('section_id'),
-            $request->getJsonString('photo_album_id'),
-            $request->getJsonString('order')
+            $request->getJsonInt('order'),
+            $request->getJsonInt('rotation')
         );
     }
 
@@ -61,8 +63,8 @@ class SectionItemController extends BaseController
         return $this->sectionItemService->updateSectionItem(
             $request->getExplodedPath()[2],
             $request->getJsonString('section_id'),
-            $request->getJsonString('photo_album_id'),
-            $request->getJsonString('order')
+            $request->getJsonInt('order'),
+            $request->getJsonInt('rotation')
         );
     }
 

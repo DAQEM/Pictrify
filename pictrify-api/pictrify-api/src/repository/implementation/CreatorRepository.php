@@ -11,7 +11,7 @@ class CreatorRepository implements ICreatorRepository
 
     public function __construct()
     {
-        $this->creatorCollection = (new DatabaseHelper())->getCreatorsCollection();
+        $this->creatorCollection = (new DatabaseHelper())->getCreatorCollection();
     }
 
     public function getAllCreators(): array

@@ -19,7 +19,7 @@ class SectionController extends BaseController
     {
         if (count($request->getExplodedPath()) == 2) {
             return $this->sectionService->getAllSections();
-        } elseif (count($request->getExplodedPath()) > 3) {
+        } elseif (count($request->getExplodedPath()) > 4) {
             throw new InvalidUrlException();
         }
 

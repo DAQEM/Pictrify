@@ -60,4 +60,17 @@ class Request
             throw new BadRequestException("The key '$key' is not a string in the json body.");
         }
     }
+
+    /**
+     * @throws BadRequestException if the key is not a string in the json body.
+     */
+    public function getJsonInt(string $key): int
+    {
+        $json = $this->getJson($key);
+        if (is_int($json)) {
+            return $json;
+        } else {
+            throw new BadRequestException("The key '$key' is not a string in the json body.");
+        }
+    }
 }

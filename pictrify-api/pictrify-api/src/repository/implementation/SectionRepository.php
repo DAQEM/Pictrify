@@ -8,10 +8,12 @@ use Pictrify\interfaces\ISectionRepository;
 class SectionRepository implements ISectionRepository
 {
     private Collection $sectionCollection;
+    private PhotoAlbumRepository $photoAlbumRepository;
 
     public function __construct()
     {
         $this->sectionCollection = (new DatabaseHelper())->getSectionCollection();
+        $this->photoAlbumRepository = new PhotoAlbumRepository();
     }
 
     public function getAllSections(): array
@@ -21,17 +23,24 @@ class SectionRepository implements ISectionRepository
 
     public function getSectionById(string $id): array
     {
-        return $this->sectionCollection->findOne(['_id' => $id]);
+        return (array)$this->sectionCollection->findOne(['_id' => $id]);
     }
 
-    public function getSectionsByCreatorId(string $creatorId): array
-    {
-        return $this->sectionCollection->find(['creatorId' => $creatorId])->toArray();
-    }
-
-    public function getSectionsByPhotoAlbumId(string $photoAlbumId): array
+    public function getAllSectionsByPhotoAlbumId(string $photoAlbumId): array
     {
         return $this->sectionCollection->find(['photoAlbumId' => $photoAlbumId])->toArray();
+    }
+
+    public function getAllSectionsByCreatorId(string $creatorId): array
+    {
+        $sections = array();
+        $photoAlbums = $this->photoAlbumRepository->getAllPhotoAlbumsByCreatorId($creatorId);
+
+        foreach ($photoAlbums as $photoAlbum) {
+            $sections = array_merge($sections, $this->getAllSectionsByPhotoAlbumId($photoAlbum['_id']));
+        }
+
+        return $sections;
     }
 
     public function createSection($id, $photoAlbumId, $title, $description, $sectionType, $creationDate): bool

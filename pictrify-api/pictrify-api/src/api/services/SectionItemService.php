@@ -32,6 +32,16 @@ class SectionItemService extends BaseService
         return $this->sectionItemRepository->getAllSectionItemsBySectionId($sectionId);
     }
 
+    public function getAllSectionItemsByCreatorId(string $creatorId): array
+    {
+        return $this->sectionItemRepository->getAllSectionItemsByCreatorId($creatorId);
+    }
+
+    public function getAllSectionItemsByPhotoAlbumId(string $creatorId): array
+    {
+        return $this->sectionItemRepository->getAllSectionItemsByPhotoAlbumId($creatorId);
+    }
+
     /**
      * @throws ForbiddenException if the section does not exist, the order is not valid or the rotation is not valid.
      */
