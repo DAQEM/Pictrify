@@ -14,10 +14,12 @@
 	<h1>All Creators</h1>
 	<div class="flex flex-wrap">
 		{#each creators as creator}
-			<div class="bg-white m-3 p-3 rounded-lg text-center">
-				<h2>{creator.getUsername()}</h2>
-				<p>Joined: {creator.getCreatedAt().toLocaleDateString()}</p>
-			</div>
+			<a href="/creator/{creator.getId()}">
+				<div class="bg-white m-3 p-3 rounded-lg text-center font-bold">
+					<h2 class="font-bold">{creator.getUsername()}</h2>
+					<p>Joined: {creator.getCreatedAt().toLocaleDateString()}</p>
+				</div>
+			</a>
 		{/each}
 	</div>
 </div>
