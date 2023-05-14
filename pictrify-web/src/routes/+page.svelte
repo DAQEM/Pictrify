@@ -1,7 +1,12 @@
 <script>
-	import Counter from '../components/Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
 	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import welcome from '$lib/images/svelte-welcome.webp';
+	import { isAuthenticated, user } from '$lib/stores/auth';
+	import Counter from '../components/Counter.svelte';
+
+	$: isAuthenticated;
+
+	$: user;
 </script>
 
 <svelte:head>
@@ -26,6 +31,15 @@
 	</h2>
 
 	<Counter />
+
+	{#if $isAuthenticated}
+		<h2>Hey {$user.name}!</h2>
+		{#if $user.picture}
+			<img src={$user.picture} alt={$user.name} />
+		{:else}
+			<img src="https://source.unsplash.com/random/400x300" alt="Random Photo" />
+		{/if}
+	{/if}
 </section>
 
 <style>

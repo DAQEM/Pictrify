@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { getIsAuthenticatedValue } from 'sveltekit-auth0';
 	import { Creator } from '../../../types/creator';
 	import type { PageData } from './$types';
 
@@ -9,8 +8,6 @@
 	$: {
 		creator = Creator.fromJson(data.creator);
 	}
-
-	console.log(getIsAuthenticatedValue());
 </script>
 
 <div class="flex flex-col justify-center text-center">

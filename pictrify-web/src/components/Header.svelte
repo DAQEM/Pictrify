@@ -1,22 +1,41 @@
-<script>
+<script lang="ts">
 	import logo from '$lib/images/logo-transparant-white.png';
-	import RoundedButton from './RoundedButton.svelte';
-	import LoginModal from '../components/LoginModal.svelte';
 	import AiOutlineLogin from 'svelte-icons-pack/ai/AiOutlineLogin';
+	import RoundedButton from './RoundedButton.svelte';
 
-	let showModal = false;
+	import auth from '$lib/services/auth';
+	import { isAuthenticated } from '$lib/stores/auth';
+	import type { Auth0Client } from '@auth0/auth0-spa-js';
+	import { onMount } from 'svelte';
+
+	let auth0Client: Auth0Client;
+
+	onMount(async () => {
+		auth0Client = await auth.createClient();
+	});
+
+	function login() {
+		auth.loginWithPopup(auth0Client);
+	}
+
+	function logout() {
+		auth.logout(auth0Client);
+	}
 </script>
 
 <header class="flex justify-between p-4">
-	{#if showModal}
-		<LoginModal on:close={() => (showModal = false)} />
-	{/if}
-
 	<div class="h-8">
 		<a class="h-8" href="/">
 			<img class="h-8" src={logo} alt="Pictrify" />
 		</a>
 	</div>
+	<div>
+		<a href="/creator">Creators</a>
+	</div>
 
-	<RoundedButton icon={AiOutlineLogin} onClick={() => (showModal = true)}>Login</RoundedButton>
+	{#if $isAuthenticated}
+		<RoundedButton icon={AiOutlineLogin} onClick={logout}>Logout</RoundedButton>
+	{:else}
+		<RoundedButton icon={AiOutlineLogin} onClick={login}>Login</RoundedButton>
+	{/if}
 </header>
