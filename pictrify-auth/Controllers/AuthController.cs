@@ -1,5 +1,4 @@
 ﻿using dotenv.net;
-using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using pictrify_auth.API;
 using pictrify_auth.Entities;
@@ -28,21 +27,23 @@ public class AuthController : ControllerBase
             validCredentials = creator.CanLogin(model);
         }
         
-        if (validCredentials)
+        if (validCredentials && creator != null)
         {
             Claim[] claims = {
-                new(ClaimTypes.Name, model.Username)
+                new("_id", creator.Id.ToString()),
+                new("_username", model.Username),
+                new("_email", creator.Email),
             };
 
             SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(DotEnv.Read()["SECRET_KEY"]));
-            SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha256);
+            SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
 
             JwtSecurityToken token = new(
                 issuer: DotEnv.Read()["ISSUER"],
                 audience: DotEnv.Read()["AUDIENCE"],
                 claims: claims,
                 expires: DateTime.UtcNow.AddDays(7),
-                signingCredentials: creds
+                signingCredentials: credentials
             );
 
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
@@ -78,6 +79,51 @@ public class AuthController : ControllerBase
         }
         return BadRequest(new { message = "Registration failed" });
     }
+    
+    [HttpPost("verify")]
+    public IActionResult Verify(VerifyModel model)
+    {
+        try
+        {
+            JwtSecurityTokenHandler tokenHandler = new();
+            TokenValidationParameters validationParameters = new()
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(DotEnv.Read()["SECRET_KEY"])),
+                ValidateIssuer = true,
+                ValidIssuer = DotEnv.Read()["ISSUER"],
+                ValidateAudience = true,
+                ValidAudience = DotEnv.Read()["AUDIENCE"],
+            };
+
+            ClaimsPrincipal claimsPrincipal;
+            try
+            {
+                claimsPrincipal = tokenHandler.ValidateToken(model.Token, validationParameters, out _);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(new { error = "Invalid token" });
+            }
+
+            string? creatorId = claimsPrincipal.FindFirst("_id")?.Value;
+            string? creatorUsername = claimsPrincipal.FindFirst("_username")?.Value;
+            string? creatorEmail = claimsPrincipal.FindFirst("_email")?.Value;
+            return Ok(new { valid = true, user = new
+                {
+                    id = creatorId, 
+                    username = creatorUsername, 
+                    email = creatorEmail
+                } 
+            });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "An error occurred during token verification" });
+        }
+    }
+
     
     // [HttpPost("refresh-token")]
     // [Authorize]

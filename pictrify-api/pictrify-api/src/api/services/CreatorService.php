@@ -58,6 +58,7 @@ class CreatorService extends BaseService
         //create a new uuid v4 for the creator
         $id = Guid::newGuid();
         $isoDate = UTCDate::nowISO();
+        $image = 'https://i.imgur.com/ShL15rC.png';
 
         if ($this->creatorUsernameExists($id, $username)) {
             throw new ForbiddenException('Username already exists');
@@ -75,7 +76,7 @@ class CreatorService extends BaseService
             throw new ForbiddenException('Email is not valid');
         }
 
-        $success = $this->creatorRepository->createCreator($id, $username, $email, $password_hash, $password_salt, $isoDate);
+        $success = $this->creatorRepository->createCreator($id, $username, $email, $password_hash, $password_salt, $image, $isoDate);
 
         return $this->createdResponse($success, [
             '_id' => $id,
@@ -83,6 +84,7 @@ class CreatorService extends BaseService
             'email' => $email,
             'password_hash' => $password_hash,
             'password_salt' => $password_salt,
+            'image' => $image,
             'join_date' => $isoDate,
         ]);
     }
@@ -108,13 +110,14 @@ class CreatorService extends BaseService
             throw new ForbiddenException('Email is not valid');
         }
 
-        $success = $this->creatorRepository->updateCreator($id, $username, $email, $password_hash);
+        $success = $this->creatorRepository->updateCreator($id, $username, $email, $password_hash, $image);
 
         return $this->updatedResponse($success, [
             '_id' => $id,
             'username' => $username,
             'email' => $email,
             'password_hash' => $password_hash,
+            'image' => $image
         ]);
     }
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Creator } from '../../types/creator';
+	import { Creator } from '../../lib/types/creator';
 	import type { PageData } from './$types';
 
 	export let data: PageData;

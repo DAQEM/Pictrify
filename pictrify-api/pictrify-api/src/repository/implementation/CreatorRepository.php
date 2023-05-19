@@ -34,7 +34,7 @@ class CreatorRepository implements ICreatorRepository
         return (array)$this->creatorCollection->findOne(["email" => $email]);
     }
 
-    public function createCreator($id, $username, $email, $password_hash, $password_salt, $join_date): bool
+    public function createCreator($id, $username, $email, $password_hash, $password_salt, $image, $join_date): bool
     {
         return $this->creatorCollection->insertOne([
                 "_id" => $id,
@@ -42,11 +42,12 @@ class CreatorRepository implements ICreatorRepository
                 "email" => $email,
                 "created_at" => $join_date,
                 "password_hash" => $password_hash,
-                "password_salt" => $password_salt
+                "password_salt" => $password_salt,
+                "image" => $image
             ])->getInsertedCount() > 0;
     }
 
-    public function updateCreator($id, $username, $email, $password_hash): bool
+    public function updateCreator($id, $username, $email, $password_hash, $image): bool
     {
         return $this->creatorCollection->updateOne(
                 ["_id" => $id],
@@ -54,7 +55,8 @@ class CreatorRepository implements ICreatorRepository
                     '$set' => [
                         "username" => $username,
                         "email" => $email,
-                        "password" => $password_hash
+                        "password" => $password_hash,
+                        "image" => $image
                     ]
                 ]
             )->getModifiedCount() > 0;
