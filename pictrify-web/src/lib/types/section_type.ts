@@ -1,0 +1,8 @@
+export enum SectionType {
+    EMPTY = "EMPTY",
+    ONE_IMAGE = "ONE_IMAGE",
+    TWO_IMAGES = "TWO_IMAGES",
+    THREE_IMAGES = "THREE_IMAGES",
+    FOUR_IMAGES = "FOUR_IMAGES",
+    FIVE_IMAGES = "FIVE_IMAGES"
+}
