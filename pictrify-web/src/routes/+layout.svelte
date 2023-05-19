@@ -1,27 +1,23 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import Authentication from '../components/Authentication.svelte';
 	import Header from '../components/Header.svelte';
 	import './styles.css';
-	import { initFlowbite } from 'flowbite';
 	import Footer from '../components/Footer.svelte';
+	import { page } from '$app/stores';
+	import { Creator } from '$lib/types/creator';
 
-	onMount(() => {
-		initFlowbite();
-	});
+	const isAuthenticated = $page.data.isAuthenticated;
+	const creator = $page.data.creator;
 </script>
 
 <div class="w-full flex flex-col justify-center">
-	<Authentication>
-		<div>
-			<Header />
+	<div>
+		<Header isAuthenticated={isAuthenticated} creator={Creator.fromJson(creator)} />
 
-			<main>
-				<slot />
-			</main>
+		<main>
+			<slot />
+		</main>
 
-			<Footer />
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
-		</div>
-	</Authentication>
+		<Footer />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+	</div>
 </div>
