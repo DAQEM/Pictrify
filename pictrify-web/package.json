@@ -37,7 +37,11 @@
 	"type": "module",
 	"dependencies": {
 		"@auth0/auth0-spa-js": "^2.0.4",
+		"@popperjs/core": "^2.11.7",
 		"@sveltejs/adapter-node": "^1.2.4",
+		"classnames": "^2.3.2",
+		"flowbite": "^1.6.5",
+		"flowbite-svelte": "^0.35.4",
 		"svelte-icons-pack": "^2.1.0"
 	}
 }

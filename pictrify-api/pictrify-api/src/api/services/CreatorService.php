@@ -53,7 +53,7 @@ class CreatorService extends BaseService
     /**
      * @throws ForbiddenException if the username or email already exists or the values are not valid.
      */
-    public function createCreator($username, $email): array
+    public function createCreator($username, $email, $password_hash, $password_salt): array
     {
         //create a new uuid v4 for the creator
         $id = Guid::newGuid();
@@ -75,12 +75,14 @@ class CreatorService extends BaseService
             throw new ForbiddenException('Email is not valid');
         }
 
-        $success = $this->creatorRepository->createCreator($id, $username, $email, $isoDate);
+        $success = $this->creatorRepository->createCreator($id, $username, $email, $password_hash, $password_salt, $isoDate);
 
         return $this->createdResponse($success, [
             '_id' => $id,
             'username' => $username,
             'email' => $email,
+            'password_hash' => $password_hash,
+            'password_salt' => $password_salt,
             'join_date' => $isoDate,
         ]);
     }
@@ -88,7 +90,7 @@ class CreatorService extends BaseService
     /**
      * @throws ForbiddenException if the username or email already exists or the values are not valid.
      */
-    public function updateCreator($id, $username, $email): array
+    public function updateCreator($id, $username, $email, $password_hash): array
     {
         if ($this->creatorUsernameExists($id, $username)) {
             throw new ForbiddenException('Username already exists');
@@ -106,12 +108,13 @@ class CreatorService extends BaseService
             throw new ForbiddenException('Email is not valid');
         }
 
-        $success = $this->creatorRepository->updateCreator($id, $username, $email);
+        $success = $this->creatorRepository->updateCreator($id, $username, $email, $password_hash);
 
         return $this->updatedResponse($success, [
             '_id' => $id,
             'username' => $username,
             'email' => $email,
+            'password_hash' => $password_hash,
         ]);
     }
 

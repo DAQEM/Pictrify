@@ -44,7 +44,9 @@ class CreatorController extends BaseController
 
         return $this->creatorService->createCreator(
             $request->getJsonString('username'),
-            $request->getJsonString('email')
+            $request->getJsonString('email'),
+            $request->getJsonString('password_hash'),
+            $request->getJsonString('password_salt')
         );
     }
 
@@ -62,7 +64,8 @@ class CreatorController extends BaseController
         return $this->creatorService->updateCreator(
             $request->getExplodedPath()[2],
             $request->getJsonString('username'),
-            $request->getJsonString('email')
+            $request->getJsonString('email'),
+            $request->getJsonString('password_hash'),
         );
     }
 
