@@ -69,7 +69,7 @@ class CreatorService extends BaseService
         }
 
         if (!$this->usernameValid($username)) {
-            throw new ForbiddenException('Username is not valid');
+            throw new ForbiddenException('Username is not valid (max 16 characters)');
         }
 
         if (!$this->emailValid($email)) {
@@ -103,7 +103,7 @@ class CreatorService extends BaseService
         }
 
         if (!$this->usernameValid($username)) {
-            throw new ForbiddenException('Username is not valid');
+            throw new ForbiddenException('Username is not valid (max 16 characters)');
         }
 
         if (!$this->emailValid($email)) {
@@ -162,7 +162,7 @@ class CreatorService extends BaseService
 
     private function usernameValid(string $username): bool
     {
-        return preg_match('/^[a-zA-Z0-9_]{2,30}$/', $username);
+        return preg_match('/^[a-zA-Z0-9_]{2,16}$/', $username);
     }
 
     private function emailValid(string $email): bool

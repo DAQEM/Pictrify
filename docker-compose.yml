@@ -1,0 +1,54 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongopwd
+    networks:
+      - pictrify-network
+
+  pictrify-api:
+    build: pictrify-api/pictrify-api
+    container_name: pictrify-api
+    volumes:
+      - ./pictrify-api/pictrify-api/src:/var/www/html
+    ports:
+      - "8393:80"
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      - pictrify-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-web-viewer
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongopwd
+      ME_CONFIG_MONGODB_URL: mongodb://root:mongopwd@mongo:27017/
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      - pictrify-network
+
+  pictrify-auth:
+    build: pictrify-auth
+    container_name: pictrify-auth
+    ports:
+      - "7184:80"
+    networks:
+      - pictrify-network
+
+networks:
+  pictrify-network:
+    external: true

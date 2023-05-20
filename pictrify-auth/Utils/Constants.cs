@@ -2,5 +2,5 @@
 
 public class Constants
 {
-    public const string BaseApiUrl = "http://localhost:8393/api";
+    public const string BaseApiUrl = "http://pictrify-api:80/api";
 }

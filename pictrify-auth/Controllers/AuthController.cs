@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using pictrify_auth.API;
 using pictrify_auth.Entities;
 using pictrify_auth.Models;
+using pictrify_auth.Utils;
 
 namespace pictrify_auth.Controllers;
 
@@ -55,6 +56,12 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterModel model)
     {
+        List<string> missingPasswordRequirements = PasswordChecker.CheckPasswordRequirements(model.Password);
+        if (missingPasswordRequirements.Any())
+        {
+            return BadRequest(new { message = $"Password does not meet the following requirements: {string.Join(", ", missingPasswordRequirements)}" });
+        }
+
         Creator creator = new()
         {
             Username = model.Username,
@@ -67,21 +74,37 @@ public class AuthController : ControllerBase
         HttpResponseMessage? responseMessage = await CreatorApiClient.CreateCreator(creator);
         if (responseMessage is { IsSuccessStatusCode: true })
         {
-            return Ok(new { message = "Registration successful" });
+            Claim[] claims = {
+                new("_id", creator.Id.ToString()),
+                new("_username", creator.Username),
+                new("_email", creator.Email),
+            };
+
+            SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(DotEnv.Read()["SECRET_KEY"]));
+            SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
+
+            JwtSecurityToken token = new(
+                issuer: DotEnv.Read()["ISSUER"],
+                audience: DotEnv.Read()["AUDIENCE"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: credentials
+            );
+            
+            return Ok(new { message = "Registration successful", token = new JwtSecurityTokenHandler().WriteToken(token)});
         }
 
         if (responseMessage != null)
         {
             string responseContent = await responseMessage.Content.ReadAsStringAsync();
             ErrorResponseModel? errorObject = JsonConvert.DeserializeObject<ErrorResponseModel>(responseContent);
-            string reason = errorObject?.Reason ?? "Registration failed";
-            return BadRequest(new { message = reason });
+            return BadRequest(new { message = errorObject?.Reason ?? "Registration failed" });
         }
         return BadRequest(new { message = "Registration failed" });
     }
     
     [HttpPost("verify")]
-    public IActionResult Verify(VerifyModel model)
+    public async Task<IActionResult> Verify(VerifyModel model)
     {
         try
         {
@@ -101,22 +124,34 @@ public class AuthController : ControllerBase
             {
                 claimsPrincipal = tokenHandler.ValidateToken(model.Token, validationParameters, out _);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.Message);
                 return BadRequest(new { error = "Invalid token" });
             }
 
             string? creatorId = claimsPrincipal.FindFirst("_id")?.Value;
             string? creatorUsername = claimsPrincipal.FindFirst("_username")?.Value;
             string? creatorEmail = claimsPrincipal.FindFirst("_email")?.Value;
-            return Ok(new { valid = true, user = new
+
+            if (creatorId != null && creatorUsername != null && creatorEmail != null)
+            {
+                Creator? creator = await CreatorApiClient.GetCreatorById(creatorId);
+                
+                if (creator != null)
                 {
-                    id = creatorId, 
-                    username = creatorUsername, 
-                    email = creatorEmail
-                } 
-            });
+                    if (creator.Username == creatorUsername && creator.Email == creatorEmail)
+                    {
+                        return Ok(new { valid = true, user = new
+                            {
+                                id = creator.Id.ToString(), 
+                                username = creator.Username, 
+                                email = creator.Email
+                            } 
+                        });
+                    }
+                }
+            }
+            return BadRequest(new { error = "Invalid token" });
         }
         catch (Exception)
         {

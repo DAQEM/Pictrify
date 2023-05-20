@@ -2,7 +2,7 @@ import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
-    const res = await fetch(`http://localhost:8393/api/creator/${params.id}`);
+    const res = await fetch(`http://localhost:8393/api/creator/username/${params.username}`);
     const creator = await res.json();
 
     if (!res.ok) {

@@ -51,7 +51,22 @@ public static class CreatorApiClient
         }
         return null;
     }
-    
+
+    public static async Task<Creator?> GetCreatorById(string creatorId)
+    {
+        string url = $"{Constants.BaseApiUrl}/creator/{Uri.EscapeDataString(creatorId)}";
+        HttpResponseMessage response = await new HttpClient().GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            HttpContent content = response.Content;
+            string json = await content.ReadAsStringAsync();
+            Creator? user = JsonConvert.DeserializeObject<Creator>(json, new Creator.Deserializer());
+            return user;
+        }
+        return null;
+    }
+
     public static async Task<HttpResponseMessage?> CreateCreator(Creator creator)
     {
         string url = $"{Constants.BaseApiUrl}/creator";
