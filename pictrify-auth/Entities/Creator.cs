@@ -28,7 +28,7 @@ public class Creator
     public bool CanLogin(LoginModel model)
     {
         model.Password = Hasher.HashPassword(model.Password, PasswordSalt);
-        return Username == model.Username && PasswordHash == model.Password;
+        return string.Equals(Username, model.Username, StringComparison.CurrentCultureIgnoreCase) && PasswordHash == model.Password;
     }
 
     public override string ToString()

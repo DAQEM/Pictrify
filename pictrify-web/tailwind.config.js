@@ -15,7 +15,6 @@ export default {
         'theme-dark': '#005fa3',
         't-light': '#ecf9fb',
         't-dark': '#b0bac5',
-
       },
     },
   },

@@ -6,12 +6,12 @@
 	import { Creator } from '$lib/types/creator';
 
 	const isAuthenticated = $page.data.isAuthenticated;
-	const creator = $page.data.creator;
+	const viewer = $page.data.viewer;
 </script>
 
 <div class="w-full flex flex-col justify-center">
 	<div>
-		<Header isAuthenticated={isAuthenticated} creator={Creator.fromJson(creator)} />
+		<Header isAuthenticated={isAuthenticated} viewer={Creator.fromJson(viewer)} />
 
 		<main>
 			<slot />

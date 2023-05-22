@@ -22,7 +22,7 @@
 	import { onMount } from 'svelte';
 
 	export let isAuthenticated = false;
-	export let creator: Creator;
+	export let viewer: Creator;
 
 	let logo = lightModeLogo;
 
@@ -75,10 +75,10 @@
 			<Dropdown placement="bottom" triggeredBy="#avatar-menu">
 				<DropdownHeader>
 					<span class="block text-sm font-medium text-gray-600 dark:text-gray-100">
-						{creator.getUsername()}
+						{viewer.getUsername()}
 					</span>
 					<span class="block truncate text-sm text-gray-400 dark:text-gray-300">
-						{creator.getEmail()}
+						{viewer.getEmail()}
 					</span>
 				</DropdownHeader>
 				<DropdownItem href="/profile">
@@ -99,7 +99,7 @@
 				</form>
 			</Dropdown>
 		{/if}
-		<NavUl {hidden}>
+		<!-- <NavUl {hidden}>
 			<NavLi href="/" active={true}>Home</NavLi>
 			<NavLi id="nav-menu1" class="cursor-pointer">
 				<Chevron aligned>Dropdown</Chevron>
@@ -117,6 +117,6 @@
 					<Button color="blue">Sign out</Button>
 				</form>
 			</Dropdown>
-		</NavUl>
+		</NavUl> -->
 	</Navbar>
 </header>

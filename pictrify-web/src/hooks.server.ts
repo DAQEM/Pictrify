@@ -15,8 +15,9 @@ export const handle: Handle = async ({ event, resolve }) => {
         });
 
         if (verifyResponse.ok) {
+            console.log("User is authenticated");
             const { user } = await verifyResponse.json();
-            event.locals.creator = new Creator(user.id, user.username, user.email);
+            event.locals.viewer = new Creator(user.id, user.username, user.email);
             event.locals.isAuthenticated = true;
         }
     }

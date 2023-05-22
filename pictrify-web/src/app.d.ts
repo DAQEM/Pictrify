@@ -7,7 +7,7 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			creator: Creator;
+			viewer: Creator;
 			isAuthenticated: boolean;
 		}
 		// interface PageData {}

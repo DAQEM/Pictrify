@@ -8,6 +8,8 @@ export class Creator {
   private email: string;
   private created_at: Date;
 
+  private biography: string;
+
   private photo_albums: PhotoAlbum[];
   private comments: Comment[];
   private liked_photo_albums: PhotoAlbum[];
@@ -17,6 +19,7 @@ export class Creator {
     username: string = "",
     email: string = "",
     created_at: Date = new Date(),
+    biography: string = "",
     photo_albums: PhotoAlbum[] = [],
     comments: Comment[] = [],
     liked_photo_albums: PhotoAlbum[] = []
@@ -25,6 +28,7 @@ export class Creator {
     this.username = username;
     this.email = email;
     this.created_at = created_at;
+    this.biography = biography;
     this.photo_albums = photo_albums;
     this.comments = comments;
     this.liked_photo_albums = liked_photo_albums;
@@ -36,6 +40,7 @@ export class Creator {
       json.username,
       json.email,
       new Date(json.created_at),
+      json.biography,
       json.photo_albums,
       json.comments,
       json.liked_photo_albums
@@ -56,6 +61,10 @@ export class Creator {
 
   public getCreatedAt(): Date {
     return this.created_at;
+  }
+
+  public getBiography(): string {
+    return this.biography;
   }
 
   public toJSON(): string {

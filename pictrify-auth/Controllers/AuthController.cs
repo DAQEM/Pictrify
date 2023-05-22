@@ -1,4 +1,10 @@
-﻿using dotenv.net;
+﻿using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using dotenv.net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using pictrify_auth.API;
 using pictrify_auth.Entities;
@@ -158,51 +164,4 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { error = "An error occurred during token verification" });
         }
     }
-
-    
-    // [HttpPost("refresh-token")]
-    // [Authorize]
-    // public async Task<IActionResult> RefreshToken(RefreshTokenRequestModel model)
-    // {
-    //     // Retrieve the old JWT and refresh token from the request
-    //     string oldToken = model.OldToken;
-    //     string refreshToken = model.RefreshToken;
-    //
-    //     // Perform token refreshing logic, e.g., verify the old token and refresh token combination
-    //
-    //     if (IsValidRefreshToken(refreshToken) && ValidateToken(oldToken, out ClaimsPrincipal claims))
-    //     {
-    //         // Retrieve the user's identity or relevant data from the old token claims
-    //         string userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    //     
-    //         // Generate a new JWT with extended expiration
-    //         string newToken = GenerateJwtToken(userId);
-    //
-    //         // Return the new token
-    //         return Ok(new { token = newToken });
-    //     }
-    //
-    //     return BadRequest(new { message = "Invalid refresh token or expired token" });
-    // }
-    //
-    // private bool IsValidRefreshToken(string refreshToken)
-    // {
-    //     
-    // }
-    //
-    // private bool ValidateToken(string oldToken, out ClaimsPrincipal claims)
-    // {
-    //     
-    // }
-    //
-    //
-    // [HttpPost("logout")]
-    // [Authorize]
-    // public async Task<IActionResult> Logout()
-    // {
-    //     // Perform logout logic, e.g., invalidate the user's token or remove it from the token blacklist
-    //
-    //     // Return a success message or appropriate response
-    //     return Ok(new { message = "Logout successful" });
-    // }
 }

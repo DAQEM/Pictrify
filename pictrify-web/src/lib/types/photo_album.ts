@@ -35,4 +35,42 @@ export class PhotoAlbum {
         this.comments = comments;
         this.likers = likers;
     }
+
+    public getId(): Guid {
+        return this.id;
+    }
+
+    public getName(): string {
+        return this.name;
+    }
+
+    public getDescription(): string {
+        return this.description;
+    }
+
+    public getSlug(): string {
+        return this.slug;
+    }
+
+    public getCreationDate(): Date {
+        return this.creation_date;
+    }
+
+    public getEditDate(): Date {
+        return this.edit_date;
+    }
+
+    public static fromJson(json: any): PhotoAlbum {
+        return new PhotoAlbum(
+            new Guid(json._id),
+            json.name,
+            json.description,
+            json.slug,
+            new Date(json.created_at),
+            new Date(json.edit_date),
+            json.sections,
+            json.comments,
+            json.likers
+        );
+    }
 }
